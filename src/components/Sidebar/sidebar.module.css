@@ -1,0 +1,19 @@
+/** @format */
+
+.container {
+  background-color: lightblue;
+  min-height: 100%;
+}
+.button {
+  /* position: absolute; */
+  display: block;
+  float: right;
+  margin: 2rem;
+}
+.controls {
+  display: block;
+}
+
+.container .show {
+  width: "5rem";
+}
