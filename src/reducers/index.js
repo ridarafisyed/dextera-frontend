@@ -9,6 +9,7 @@ import auth from "./auth";
 import data from "./data";
 import sidebar from "../redux/features/sidebarSlice";
 import tabs from "../redux/features/tabSlice";
+import newTabs from "../redux/features/searchTabSlice";
 import favorite from "../redux/features/favoriteSlice";
 
 export default combineReducers({
@@ -20,4 +21,5 @@ export default combineReducers({
   sidebar,
   favorite,
   tabs,
+  newTabs,
 });

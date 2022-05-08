@@ -33,6 +33,12 @@ import Contact from "../../Contact/Contact";
 import Profile from "../../Profile/Profile";
 import Tasks from "../../Tasks";
 import { useDispatch, useSelector } from "react-redux";
+import AddIcon from "@mui/icons-material/Add";
+import {
+  addNewTab,
+  removeNewTab,
+  removeLastNewTab,
+} from "../../../redux/features/searchTabSlice";
 import { addTab, removeTab } from "../../../redux/features/tabSlice";
 
 const data = [
@@ -57,11 +63,17 @@ const component = {
 };
 
 const AdminDashboard = () => {
+  const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const tabList = useSelector((state) => state.tabs);
+  const newTabList = useSelector((state) => state.newTabs);
   const dispatch = useDispatch();
 
   // search tab will match the text and display tab
   const [wordEntered, setWordEntered] = useState("");
+
   const searchItem = () => {
     let selectedItem = data.filter((value) => {
       if (value.name === wordEntered) {
@@ -71,15 +83,61 @@ const AdminDashboard = () => {
   };
   const handleChangeSearch = (e) => {
     setWordEntered(e.target.value);
+    let id = tabList.length + 1;
     dispatch(
       addTab({
-        id: tabList.length + 1,
+        id: id,
         tab: e.target.value,
       }),
     );
+    dispatch(removeLastNewTab());
+    setValue(id);
     searchItem();
   };
+  const handleRemoveTab = (tab) => {
+    dispatch(removeTab(tab));
+    setValue(0);
+  };
+  const handleRemoveNewTab = (tab) => {
+    dispatch(removeNewTab(tab));
+    setValue(0);
+  };
 
+  const addSearchTab = () => {
+    let id = newTabList.length + 10;
+    setTimeout(
+      dispatch(
+        addNewTab({
+          id: id,
+          name: "newtab",
+        }),
+      ),
+      5000,
+    );
+
+    setValue(id);
+  };
+  const displayNewTabsName = () => {
+    if (newTabList) {
+      return newTabList.map((tab) => (
+        <Tab
+          key={tab.id}
+          value={tab.id}
+          label={
+            <span>
+              newtab
+              <IconButton
+                component="div"
+                onClick={() => handleRemoveNewTab(tab)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </span>
+          }
+        />
+      ));
+    } else return null;
+  };
   const displayTabsName = () => {
     if (tabList) {
       return tabList.map((tab) => (
@@ -90,23 +148,12 @@ const AdminDashboard = () => {
             <span>
               {" "}
               {tab.name}
-              <IconButton
-                component="div"
-                onClick={() => dispatch(removeTab(tab))}
-              >
+              <IconButton component="div" onClick={() => handleRemoveTab(tab)}>
                 <CloseIcon />
               </IconButton>
             </span>
           }
         />
-      ));
-    } else return null;
-  };
-
-  const displayTabs = () => {
-    if (tabList) {
-      return tabList.map((tab) => (
-        <TabPanel value={tab.id}>{component[tab.name]}</TabPanel>
       ));
     } else return null;
   };
@@ -149,11 +196,21 @@ const AdminDashboard = () => {
       </Box>
     );
   };
-
-  const [value, setValue] = React.useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const displaySearchTabs = () => {
+    if (newTabList) {
+      return newTabList.map((tab) => (
+        <TabPanel value={tab.id}>{searchTab()}</TabPanel>
+      ));
+    } else return null;
   };
+  const displayTabs = () => {
+    if (tabList) {
+      return tabList.map((tab) => (
+        <TabPanel value={tab.id}>{component[tab.name]}</TabPanel>
+      ));
+    } else return null;
+  };
+
   const renderTabs = () => {
     return (
       <Box sx={{ width: "100%" }}>
@@ -174,11 +231,21 @@ const AdminDashboard = () => {
               />
 
               {displayTabsName()}
+              {displayNewTabsName()}
+
               <Tab
                 icon={<MoreVert />}
                 iconPosition="start"
-                label="+"
-                value={10}
+                label={
+                  <IconButton
+                    component="div"
+                    onClick={() => dispatch(addNewTab())}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                }
+                onClick={addSearchTab}
+                value={100}
               />
             </Tabs>
           </Box>
@@ -186,7 +253,8 @@ const AdminDashboard = () => {
             <DashBoard />
           </TabPanel>
           {displayTabs()}
-          <TabPanel value={10}>{searchTab()}</TabPanel>
+          {displaySearchTabs()}
+          <TabPanel value={100}></TabPanel>
         </TabContext>
       </Box>
     );

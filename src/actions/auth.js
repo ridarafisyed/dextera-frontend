@@ -15,6 +15,7 @@ import {
 import { createMessage, returnErrors } from "./messages";
 import { useSelector } from "react-redux";
 import { reset } from "../redux/features/tabSlice";
+import { resetNewTab } from "../redux/features/searchTabSlice";
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -110,6 +111,7 @@ export const logout = () => (dispatch, getState) => {
     .then((res) => {
       localStorage.removeItem("token");
       dispatch(reset());
+      dispatch(resetNewTab());
       dispatch({
         type: LOGOUT_SUCCESS,
       });
