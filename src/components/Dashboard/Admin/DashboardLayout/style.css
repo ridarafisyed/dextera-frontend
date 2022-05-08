@@ -1,6 +1,6 @@
 /** @format */
 
-.react-grid-layout {
+* @format .react-grid-layout {
   position: relative;
   transition: height 200ms ease;
 }

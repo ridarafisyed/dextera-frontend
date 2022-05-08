@@ -13,6 +13,8 @@ import {
   REGISTER_FAIL,
 } from "./types";
 import { createMessage, returnErrors } from "./messages";
+import { useSelector } from "react-redux";
+import { reset } from "../redux/features/tabSlice";
 
 // CHECK TOKEN & LOAD USER
 export const loadUser = () => (dispatch, getState) => {
@@ -31,7 +33,7 @@ export const loadUser = () => (dispatch, getState) => {
       });
     })
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data.message, err.response.status));
       dispatch({
         type: AUTH_ERROR,
       });
@@ -52,19 +54,20 @@ export const login = (username, email, password) => (dispatch) => {
 
   axios
     .post(`${process.env.REACT_APP_API_URL}/user/auth/login`, body, config)
-    .then((res) => {
+    .then(function(response) {
+      console.log(response);
       dispatch(createMessage({ LoginSuccess: "Login Successful" }));
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data,
+        payload: response.data,
       });
-      dispatch({});
     })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
+    .catch(function(error) {
+      dispatch(returnErrors(error.response.data, error.response.status));
       dispatch({
         type: LOGIN_FAIL,
       });
+      console.log(error);
     });
 };
 
@@ -105,18 +108,17 @@ export const logout = () => (dispatch, getState) => {
       tokenConfig(getState),
     )
     .then((res) => {
-      dispatch({ type: "CLEAR_LEADS" });
+      localStorage.removeItem("token");
+      dispatch(reset());
       dispatch({
         type: LOGOUT_SUCCESS,
       });
-    })
-    .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
 
 // Setup config with token - helper function
 export const tokenConfig = (getState) => {
+  // const token = useSelector((state) => state.auth.token);
   // Get token from state
   const token = getState().auth.token;
 

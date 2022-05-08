@@ -3,9 +3,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  manageUser: true,
-  manageRole: true,
-  manageGroup: true,
   revenueIn: true,
   revenueOut: true,
   newCustomer: true,
@@ -27,16 +24,21 @@ const sidebarSlice = createSlice({
     isDisplay: (state) => {
       state.display = !state.display;
     },
-
-    manageRoleActive: (state) => {
-      state.manageRole = !state.manageRole;
+    hideSidebar: (state) => {
+      state.display = false;
     },
-    manageUserActive: (state) => {
-      state.manageUser = !state.manageUser;
+    showSidebar: (state) => {
+      state.display = true;
     },
-    manageGroupActive: (state) => {
-      state.manageGroup = !state.manageGroup;
-    },
+    // manageRoleActive: (state) => {
+    //   state.manageRole = !state.manageRole;
+    // },
+    // manageUserActive: (state) => {
+    //   state.manageUser = !state.manageUser;
+    // },
+    // manageGroupActive: (state) => {
+    //   state.manageGroup = !state.manageGroup;
+    // },
     revenueInActive: (state) => {
       state.revenueIn = !state.revenueIn;
     },
@@ -75,9 +77,11 @@ const sidebarSlice = createSlice({
 
 export const {
   isDisplay,
-  manageRoleActive,
-  manageGroupActive,
-  manageUserActive,
+  // manageRoleActive,
+  // manageGroupActive,
+  // manageUserActive,
+  hideSidebar,
+  showSidebar,
   revenueInActive,
   revenueOutActive,
   newCustomerActive,

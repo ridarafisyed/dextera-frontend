@@ -1,11 +1,15 @@
 /** @format */
 
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import IconButton from "@material-ui/core/IconButton";
+
+import {
+  IconButton,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+} from "@mui/material";
 import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
 
 import { Appointments, Calls, Marketing, Email } from "../Charts";
 
@@ -18,27 +22,6 @@ import Map from "../Map";
 
 import NewAccounts from "../NewAccounts";
 import EmpOversite from "../EmpOversite";
-
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    padding: "0.5rem",
-  },
-  spacer: {
-    flexGrow: 1,
-  },
-  body: {
-    padding: "0.5rem",
-    flexGrow: 1,
-  },
-});
 
 const widgetNames = {
   a: <RevenueInCards />,
@@ -55,19 +38,25 @@ const widgetNames = {
 };
 
 export default function Widget({ id, onRemoveItem }) {
-  const classes = useStyles();
   return (
-    <Card className={classes.root}>
-      <div className={classes.header}>
-        <Typography variant="h6" gutterBottom>
-          {widgetNames[id]}
-        </Typography>
-        <div className={classes.spacer} />
-        <IconButton aria-label="delete" onClick={() => onRemoveItem(id)}>
+    <Card
+      sx={{
+        width: "100%",
+        height: "100%",
+        paddingTop: "0.5rem",
+        padding: "1rem",
+      }}
+    >
+      <CardActions>
+        <IconButton
+          aria-label="delete"
+          onClick={() => onRemoveItem(id)}
+          sx={{ position: "fixed", right: "16px" }}
+        >
           <CloseIcon fontSize="small" />
         </IconButton>
-      </div>
-      <div className={classes.body} />
+      </CardActions>
+      {widgetNames[id]}
     </Card>
   );
 }

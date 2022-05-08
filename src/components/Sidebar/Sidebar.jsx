@@ -70,7 +70,7 @@ const Sidebar = ({ user }) => {
           {/* {SidebarRedirect()} */}
           <TestingSidebar />
         </Box>
-        <Box p={2}>
+        {/* <Box p={2}>
           <Button
             variant="contained"
             fullWidth
@@ -84,7 +84,7 @@ const Sidebar = ({ user }) => {
           >
             Report
           </Button>
-        </Box>
+        </Box> */}
       </Paper>
     </Fragment>
   );

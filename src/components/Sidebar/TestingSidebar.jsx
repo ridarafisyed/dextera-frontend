@@ -30,12 +30,9 @@ import { SideBarBtn } from "../../styles/styles";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  manageRoleActive,
-  manageGroupActive,
   revenueInActive,
   revenueOutActive,
   newCustomerActive,
-  manageUserActive,
   lostCustomerActive,
   newAccountActive,
   marketingActive,
@@ -51,7 +48,7 @@ import "./style.css";
 const Controls = () => {
   return (
     <Fragment>
-      <Box px={3}>
+      <Box px={3} sx={{ color: "#796ef0" }}>
         <SideBarBtn variant="outlined">
           <Grid>
             <Box component={Link} to="/">
@@ -137,6 +134,7 @@ const Controls = () => {
     </Fragment>
   );
 };
+
 const Marketing = () => {
   const sidebar = useSelector((state) => state.sidebar);
   const dispatch = useDispatch();
@@ -181,12 +179,10 @@ const HumanResources = () => {
       <Box px={3}>
         <SideBarBtn
           variant="outlined"
-          onClick={() => dispatch(manageUserActive())}
+          // onClick={() => dispatch(manageUserActive())}
         >
           <Grid>
-            <Box
-              sx={sidebar.manageUser ? { color: "#ddd" } : { color: "#796ef0" }}
-            >
+            <Box sx={{ color: "#796ef0" }} component={Link} to="/users">
               <Grid item>
                 <Person fontSize="medium" />
               </Grid>
@@ -196,12 +192,10 @@ const HumanResources = () => {
         </SideBarBtn>
         <SideBarBtn
           variant="outlined"
-          onClick={() => dispatch(manageRoleActive())}
+          // onClick={() => dispatch(manageRoleActive())}
         >
           <Grid>
-            <Box
-              sx={sidebar.manageRole ? { color: "#ddd" } : { color: "#796ef0" }}
-            >
+            <Box sx={{ color: "#796ef0" }} component={Link} to="/user-roles">
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -211,14 +205,10 @@ const HumanResources = () => {
         </SideBarBtn>
         <SideBarBtn
           variant="outlined"
-          onClick={() => dispatch(manageGroupActive())}
+          // onClick={() => dispatch(manageGroupActive())}
         >
           <Grid>
-            <Box
-              sx={
-                sidebar.manageGroup ? { color: "#ddd" } : { color: "#796ef0" }
-              }
-            >
+            <Box sx={{ color: "#796ef0" }} component={Link} to="/user-groups">
               <Grid item>
                 <Group fontSize="medium" />
               </Grid>

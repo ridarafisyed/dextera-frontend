@@ -10,8 +10,11 @@ import {
 } from "@mui/material";
 
 import { Star } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
 
 const Favorites = () => {
+  const favList = useSelector((state) => state.favorite.favorite);
+  const dispatch = useDispatch();
   return (
     <div>
       <List>
@@ -20,16 +23,8 @@ const Favorites = () => {
             <ListItemIcon>
               <Star sx={{ color: "orange" }} />
             </ListItemIcon>
-            <ListItemText primary="Favorite 1" />
           </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton component="a" href="#simple-list">
-            <ListItemIcon>
-              <Star sx={{ color: "orange" }} />
-            </ListItemIcon>
-            <ListItemText primary="Favorite 2" />
-          </ListItemButton>
+          <ListItemText primary="Favorite 1" />
         </ListItem>
       </List>
     </div>

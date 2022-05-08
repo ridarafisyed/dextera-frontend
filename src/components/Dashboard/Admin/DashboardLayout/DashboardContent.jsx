@@ -1,8 +1,8 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Responsive as ResponsiveGridLayout } from "react-grid-layout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withSize } from "react-sizeme";
 
 import {
@@ -30,20 +30,98 @@ const initialLayouts = {
     { i: "c", x: 4, y: 0, w: 4, h: 4 },
     { i: "d", x: 8, y: 0, w: 4, h: 4 },
 
-    { i: "e", x: 0, y: 2, w: 5, h: 5 },
-    { i: "f", x: 5, y: 2, w: 7, h: 5 },
+    { i: "e", x: 0, y: 2, w: 5, h: 6 },
+    { i: "f", x: 5, y: 2, w: 7, h: 6 },
 
-    { i: "g", x: 0, y: 5, w: 3, h: 4 },
-    { i: "h", x: 3, y: 5, w: 3, h: 4 },
-    { i: "i", x: 6, y: 5, w: 6, h: 4 },
+    { i: "g", x: 0, y: 6, w: 3, h: 6 },
+    { i: "h", x: 3, y: 6, w: 3, h: 6 },
+    { i: "i", x: 6, y: 6, w: 6, h: 6 },
 
-    { i: "j", x: 0, y: 8, w: 8, h: 4 },
-    { i: "k", x: 8, y: 8, w: 4, h: 4 },
+    { i: "j", x: 0, y: 12, w: 8, h: 5 },
+    { i: "k", x: 8, y: 12, w: 4, h: 5 },
+  ],
+  md: [
+    { i: "a", x: 0, y: 0, w: 2, h: 4 },
+    { i: "b", x: 2, y: 0, w: 2, h: 4 },
+    { i: "c", x: 4, y: 0, w: 4, h: 4 },
+    { i: "d", x: 8, y: 0, w: 4, h: 4 },
+
+    { i: "e", x: 0, y: 2, w: 5, h: 6 },
+    { i: "f", x: 5, y: 2, w: 7, h: 6 },
+
+    { i: "g", x: 0, y: 6, w: 3, h: 6 },
+    { i: "h", x: 3, y: 6, w: 3, h: 6 },
+    { i: "i", x: 6, y: 6, w: 6, h: 6 },
+
+    { i: "j", x: 0, y: 12, w: 8, h: 5 },
+    { i: "k", x: 8, y: 12, w: 4, h: 5 },
+  ],
+  sm: [
+    { i: "a", x: 0, y: 0, w: 2, h: 4 },
+    { i: "b", x: 2, y: 0, w: 2, h: 4 },
+    { i: "c", x: 4, y: 0, w: 4, h: 4 },
+    { i: "d", x: 8, y: 0, w: 4, h: 4 },
+
+    { i: "e", x: 0, y: 2, w: 5, h: 6 },
+    { i: "f", x: 5, y: 2, w: 7, h: 6 },
+
+    { i: "g", x: 0, y: 6, w: 3, h: 6 },
+    { i: "h", x: 3, y: 6, w: 3, h: 6 },
+    { i: "i", x: 6, y: 6, w: 6, h: 6 },
+
+    { i: "j", x: 0, y: 12, w: 8, h: 5 },
+    { i: "k", x: 8, y: 12, w: 4, h: 5 },
+  ],
+  xs: [
+    { i: "a", x: 0, y: 0, w: 2, h: 3 },
+    { i: "b", x: 0, y: 4, w: 2, h: 3 },
+    { i: "c", x: 0, y: 8, w: 4, h: 6 },
+    { i: "d", x: 0, y: 12, w: 4, h: 6 },
+
+    { i: "e", x: 0, y: 18, w: 5, h: 6 },
+    { i: "f", x: 0, y: 24, w: 7, h: 6 },
+
+    { i: "g", x: 0, y: 30, w: 3, h: 4 },
+    { i: "h", x: 0, y: 36, w: 3, h: 4 },
+    { i: "i", x: 0, y: 42, w: 6, h: 6 },
+
+    { i: "j", x: 0, y: 48, w: 8, h: 5 },
+    { i: "k", x: 0, y: 53, w: 4, h: 5 },
+  ],
+  xxs: [
+    { i: "a", x: 0, y: 0, w: 2, h: 3 },
+    { i: "b", x: 0, y: 4, w: 2, h: 3 },
+    { i: "c", x: 0, y: 8, w: 4, h: 6 },
+    { i: "d", x: 0, y: 12, w: 4, h: 6 },
+
+    { i: "e", x: 0, y: 18, w: 5, h: 6 },
+    { i: "f", x: 0, y: 24, w: 7, h: 6 },
+
+    { i: "g", x: 0, y: 30, w: 3, h: 4 },
+    { i: "h", x: 0, y: 36, w: 3, h: 4 },
+    { i: "i", x: 0, y: 42, w: 6, h: 6 },
+
+    { i: "j", x: 0, y: 48, w: 8, h: 5 },
+    { i: "k", x: 0, y: 53, w: 4, h: 4 },
   ],
 };
 
 function Content({ size: { width } }) {
+  const sidebar = useSelector((state) => state.sidebar);
   const dispatch = useDispatch();
+  const components = {
+    a: sidebar.revenueIn,
+    b: sidebar.revenueOut,
+    c: sidebar.newCustomer,
+    d: sidebar.lostCustomer,
+    e: sidebar.newAccount,
+    f: sidebar.map,
+    g: sidebar.empOversite,
+    h: sidebar.calls,
+    i: sidebar.appointment,
+    j: sidebar.marketing,
+    k: sidebar.emails,
+  };
   const fnCall = {
     a: revenueInActive(),
     b: revenueOutActive(),
@@ -68,13 +146,32 @@ function Content({ size: { width } }) {
     saveToLS("layouts", layouts);
   };
   const onRemoveItem = (itemId) => {
-    setItems(items.filter((i) => i !== itemId));
+    // setItems(items.filter((i) => i !== itemId));
     dispatch(fnCall[itemId]);
   };
   const onAddItem = (itemId) => {
     setItems([...items, itemId]);
     dispatch(fnCall[itemId]);
   };
+  const displayItemList = () => {
+    return items.map((key) => (
+      <div
+        key={key}
+        className="widget"
+        data-grid={{ w: 3, h: 2, x: 0, y: Infinity }}
+        style={components[key] ? { display: "block" } : { display: "none" }}
+      >
+        <Widget
+          id={key}
+          onRemoveItem={onRemoveItem}
+          backgroundColor="#867ae9"
+        />
+      </div>
+    ));
+  };
+  useEffect(() => {
+    displayItemList();
+  }, [sidebar]);
 
   return (
     <>
@@ -87,19 +184,7 @@ function Content({ size: { width } }) {
         width={width}
         onLayoutChange={onLayoutChange}
       >
-        {items.map((key) => (
-          <div
-            key={key}
-            className="widget"
-            data-grid={{ w: 3, h: 2, x: 0, y: Infinity }}
-          >
-            <Widget
-              id={key}
-              onRemoveItem={onRemoveItem}
-              backgroundColor="#867ae9"
-            />
-          </div>
-        ))}
+        {displayItemList()}
       </ResponsiveGridLayout>
     </>
   );

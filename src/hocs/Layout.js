@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Navbar from "../components/Navbars/Navbar";
 import NavbarSec from "../components/Navbars/NavbarSec";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -8,17 +8,28 @@ import { connect } from "react-redux";
 import Chatting from "../components/Chat/Chat";
 import { useTheme } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { isDisplay } from "../redux/features/sidebarSlice";
+import {
+  isDisplay,
+  hideSidebar,
+  showSidebar,
+} from "../redux/features/sidebarSlice";
 
 import { Paper, Fab, Popover } from "@mui/material";
 import { Grid, Box, Button } from "@mui/material";
+import { useMediaQuery } from "react-responsive";
 
-import { Chat } from "@mui/icons-material";
+import { Chat, Report } from "@mui/icons-material";
 
 import Footer from "../components/Footer/Footer";
 
 const InnerLayout = ({ isAuthenticated, children }) => {
   const theme = useTheme();
+
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const sidebarToggle = useSelector((state) => state.sidebar.display);
   const dispatch = useDispatch();
@@ -53,8 +64,23 @@ const InnerLayout = ({ isAuthenticated, children }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleSidebarToggle = () => {
+    if (sidebarToggle) {
+      dispatch(hideSidebar());
+    } else {
+      dispatch(showSidebar());
+    }
+  };
   const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
+
+  useEffect(() => {
+    if (isBigScreen) {
+      dispatch(showSidebar());
+    } else if (isTabletOrMobile) {
+      dispatch(hideSidebar());
+    }
+  }, []);
+  useEffect(() => {
     if (drawerOpen) {
       const { current: descriptionElement } = descriptionElementRef;
       if (descriptionElement !== null) {
@@ -90,7 +116,7 @@ const InnerLayout = ({ isAuthenticated, children }) => {
                   <Grid item lg={10} xs={12} p={1}>
                     <Box>
                       <Button
-                        onClick={() => dispatch(isDisplay())}
+                        onClick={handleSidebarToggle}
                         p={5}
                         sx={{
                           left: "-8rem",
@@ -111,7 +137,7 @@ const InnerLayout = ({ isAuthenticated, children }) => {
                 <Fragment>
                   <Grid item lg={12} xs={12} p={1}>
                     <Box>
-                      <Button onClick={() => dispatch(isDisplay())}>
+                      <Button onClick={handleSidebarToggle}>
                         {sidebarToggle ? (
                           <i className="fas fa-angle-double-left"></i>
                         ) : (
@@ -135,19 +161,45 @@ const InnerLayout = ({ isAuthenticated, children }) => {
         )}
         <Fab
           size="large"
+          sx={
+            isDesktopOrLaptop
+              ? {
+                  borderRadius: "50%",
+                  backgroundColor: "#edb4b6",
+                  position: "fixed",
+                  bottom: "16px",
+                  left: "16px",
+                  color: "red",
+                  zIndex: "200",
+                  "&:hover": {
+                    color: "red",
+                  },
+                }
+              : { display: "none" }
+          }
+          aria-label="report"
+        >
+          <Report />
+        </Fab>
+        <Fab
+          size="large"
           onClick={handlePopoverOpen}
-          style={{
-            borderRadius: "50%",
-            backgroundColor: "#eee",
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-            color: "#461594",
-            zIndex: "200",
-            "&:hover": {
-              color: "#7a4ebf",
-            },
-          }}
+          sx={
+            isDesktopOrLaptop
+              ? {
+                  borderRadius: "50%",
+                  backgroundColor: "#eee",
+                  position: "fixed",
+                  bottom: "16px",
+                  right: "16px",
+                  color: "#461594",
+                  zIndex: "200",
+                  "&:hover": {
+                    color: "#7a4ebf",
+                  },
+                }
+              : { display: "none" }
+          }
           aria-label="chat"
         >
           <Chat />

@@ -104,7 +104,7 @@ const App = () => {
 
                     <PrivateRoutes path="/invoices" component={Invoice} />
                     <PrivateRoutes
-                      path="/create-invoice"
+                      path="/create-invoice" 
                       component={CreateInvoice}
                     />
                     <PrivateRoutes path="/recive-invoice" component={Payment} />

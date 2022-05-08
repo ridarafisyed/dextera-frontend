@@ -12,8 +12,10 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
+
 import TabPanel from "@mui/lab/TabPanel";
 import PropTypes from "prop-types";
 
@@ -57,6 +59,8 @@ const component = {
 const AdminDashboard = () => {
   const tabList = useSelector((state) => state.tabs);
   const dispatch = useDispatch();
+
+  // search tab will match the text and display tab
   const [wordEntered, setWordEntered] = useState("");
   const searchItem = () => {
     let selectedItem = data.filter((value) => {
@@ -65,7 +69,6 @@ const AdminDashboard = () => {
       }
     });
   };
-
   const handleChangeSearch = (e) => {
     setWordEntered(e.target.value);
     dispatch(
@@ -76,14 +79,25 @@ const AdminDashboard = () => {
     );
     searchItem();
   };
+
   const displayTabsName = () => {
     if (tabList) {
       return tabList.map((tab) => (
         <Tab
-          icon={<Close />}
-          iconPosition="end"
-          label={tab.name}
+          key={tab.id}
           value={tab.id}
+          label={
+            <span>
+              {" "}
+              {tab.name}
+              <IconButton
+                component="div"
+                onClick={() => dispatch(removeTab(tab))}
+              >
+                <CloseIcon />
+              </IconButton>
+            </span>
+          }
         />
       ));
     } else return null;
@@ -104,7 +118,7 @@ const AdminDashboard = () => {
           p: "2px 4px",
           display: "flex",
           alignItems: "center",
-          width: "100%",
+          width: "50%",
           borderRadius: "5rem",
           backgroundColor: "#dfdfdf",
         }}
@@ -113,9 +127,14 @@ const AdminDashboard = () => {
           fullWidth
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={wordEntered}
+          value=""
           label="Search...."
           onChange={handleChangeSearch}
+          sx={{
+            " & .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+          }}
         >
           {data.map((item, index) => (
             <MenuItem key={index} value={item.name}>
@@ -140,7 +159,13 @@ const AdminDashboard = () => {
       <Box sx={{ width: "100%" }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobilearia-label="lab API tabs example"
+            >
               <Tab
                 icon={<MoreVert />}
                 iconPosition="start"
@@ -155,7 +180,7 @@ const AdminDashboard = () => {
                 label="+"
                 value={10}
               />
-            </TabList>
+            </Tabs>
           </Box>
           <TabPanel value={0}>
             <DashBoard />

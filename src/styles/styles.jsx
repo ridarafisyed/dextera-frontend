@@ -28,6 +28,7 @@ export const SideBarBtn = styled(Button)(({ theme }) => ({
 export const SecNavbar = styled("nav")(({ theme }) => ({
   boxShadow: "none",
   backgroundColor: theme.palette.primary.main,
+  overflow: "hidden",
   color: "#eee",
   position: "reletive",
   padding: "0",

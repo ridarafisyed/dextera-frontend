@@ -29,6 +29,7 @@ const Map = () => {
         mapboxApiAccessToken={
           "pk.eyJ1IjoicmlkYXJhZmlzeWVkIiwiYSI6ImNreTkydGE2bzAyZTQydnA0dWF1Y2xrdWQifQ.BA1u_ZGDHrpvj0WVuypIIQ"
         }
+        style={{ zIndex: 200 }}
       >
         <Marker
           latitude={40.7128}
