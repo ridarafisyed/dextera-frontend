@@ -177,7 +177,7 @@ const ManageUser = () => {
   };
   const FetchRoleData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/role/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/api/get-role-list/`, CONFIG)
       .then((res) => {
         console.log(res.data);
         setLoading(false);
@@ -220,6 +220,35 @@ const ManageUser = () => {
     FetchData();
     FetchGroupData();
   }, []);
+  const showUsers = () => {
+    if (activityData.length === 0) {
+      return <p>No data found...</p>;
+    } else
+      return activityData.map((data) => (
+        <TableRow>
+          <TableCell>{data.f_name}</TableCell>
+          <TableCell>{data.l_name}</TableCell>
+          <TableCell>{data.p_email}</TableCell>
+          <TableCell>{data.role}</TableCell>
+          <TableCell>{data.group}</TableCell>
+          <TableCell>-</TableCell>
+          <TableCell>inactive</TableCell>
+          <TableCell>
+            <Button
+              variant="contained"
+              value={data.id}
+              onClick={() => handleDelete(data.id)}
+              sx={{
+                borderRadius: "0.5rem",
+                float: "right",
+              }}
+            >
+              <ClearIcon />
+            </Button>
+          </TableCell>
+        </TableRow>
+      ));
+  };
 
   return (
     <Fragment>
@@ -677,32 +706,7 @@ const ManageUser = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {loading && isActive
-                ? activityData?.map((data) => (
-                    <TableRow>
-                      <TableCell>{data.f_name}</TableCell>
-                      <TableCell>{data.l_name}</TableCell>
-                      <TableCell>{data.p_email}</TableCell>
-                      <TableCell>{data.role}</TableCell>
-                      <TableCell>{data.group}</TableCell>
-                      <TableCell>-</TableCell>
-                      <TableCell>inactive</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          value={data.id}
-                          onClick={() => handleDelete(data.id)}
-                          sx={{
-                            borderRadius: "0.5rem",
-                            float: "right",
-                          }}
-                        >
-                          <ClearIcon />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : null} */}
+              {!loading ? showUsers() : <Typography>Loading ...</Typography>}
             </TableBody>
           </Table>
         </TableContainer>

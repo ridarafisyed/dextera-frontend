@@ -92,6 +92,31 @@ const Classification = () => {
         return <ActionAlerts value={{ status: err.statusText }} />;
       });
   };
+  const showClassification = () => {
+    if (classification.length === 0) {
+      return <p>No data found...</p>;
+    } else
+      return classification.map((data) => (
+        <Box mt={1}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText>{data.name}</ListItemText>
+              <Button
+                variant="contained"
+                value={data.id}
+                onClick={() => handleDelete(data.id)}
+                sx={{
+                  borderRadius: "0.5rem",
+                  float: "right",
+                }}
+              >
+                <ClearIcon />
+              </Button>
+            </ListItem>
+          </List>
+        </Box>
+      ));
+  };
   return (
     <Fragment>
       <Button
@@ -139,30 +164,7 @@ const Classification = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {!loading ? (
-        classification.map((data) => (
-          <Box mt={1}>
-            <List>
-              <ListItem disablePadding>
-                <ListItemText>{data.name}</ListItemText>
-                <Button
-                  variant="contained"
-                  value={data.id}
-                  onClick={() => handleDelete(data.id)}
-                  sx={{
-                    borderRadius: "0.5rem",
-                    float: "right",
-                  }}
-                >
-                  <ClearIcon />
-                </Button>
-              </ListItem>
-            </List>
-          </Box>
-        ))
-      ) : (
-        <Typography>Loading ...</Typography>
-      )}
+      {!loading ? showClassification() : <Typography>Loading ...</Typography>}
     </Fragment>
   );
 };

@@ -100,6 +100,31 @@ const Category = () => {
         );
       });
   };
+  const showCategory = () => {
+    if (category.length === 0) {
+      return <p> no data found...</p>;
+    } else
+      return category.map((data) => (
+        <Box mt={1}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText>{data.name}</ListItemText>
+              <Button
+                variant="contained"
+                value={data.id}
+                onClick={() => handleDelete(data.id)}
+                sx={{
+                  borderRadius: "0.5rem",
+                  float: "right",
+                }}
+              >
+                <ClearIcon />
+              </Button>
+            </ListItem>
+          </List>
+        </Box>
+      ));
+  };
   return (
     <Fragment>
       <Button
@@ -145,30 +170,7 @@ const Category = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* {!loading ? (
-        category?.map((data) => (
-          <Box mt={1}>
-            <List>
-              <ListItem disablePadding>
-                <ListItemText>{data.name}</ListItemText>
-                <Button
-                  variant="contained"
-                  value={data.id}
-                  onClick={() => handleDelete(data.id)}
-                  sx={{
-                    borderRadius: "0.5rem",
-                    float: "right",
-                  }}
-                >
-                  <ClearIcon />
-                </Button>
-              </ListItem>
-            </List>
-          </Box>
-        ))
-      ) : (
-        <Typography>Loading ...</Typography>
-      )} */}
+      {!loading ? showCategory() : <Typography>Loading ...</Typography>}
     </Fragment>
   );
 };

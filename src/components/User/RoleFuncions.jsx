@@ -1,6 +1,10 @@
 /** @format */
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import axios from "axios";
+
+import { ActionAlerts } from "../../utils/ActionAlerts";
+import { CONFIG } from "../../api/MatterApi";
 import {
   Table,
   TableCell,
@@ -14,7 +18,7 @@ import {
 } from "@mui/material";
 
 const RoleFuncions = ({ data }) => {
-  const functions = [
+  const funcList = [
     "Contacts",
     "Matter",
     "Calendar",
@@ -33,6 +37,66 @@ const RoleFuncions = ({ data }) => {
     "Discounts",
     "Bank Accounts",
   ];
+  const [role, setRole] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState("");
+  const [rateType, setRateType] = useState("");
+
+  const FetchRoleData = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/role/${data}/`, CONFIG)
+      .then((res) => {
+        console.log(res.data);
+        setLoading(false);
+        setStatus(res.statusText);
+        setRole(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setError(err.message);
+      });
+  };
+
+  useEffect(() => {
+    FetchRoleData();
+  }, []);
+  const showFunctions = (data) => {
+    const [num, string] = data.split("_");
+    let funcs = string.split("");
+    let name = funcList[parseInt(num)];
+    console.log(name);
+    return <p>{name}</p>;
+  };
+  const displayFunctions = () => {
+    if (role.length === 0) return <p>please select Role</p>;
+    else {
+      let arr = [
+        role.contacts,
+        role.matter,
+        role.calendar,
+        role.flat_fee,
+        role.expenses,
+        role.trust,
+        role.tasks,
+        role.invoice,
+        role.payments,
+        role.full_dob,
+        role.full_ssn,
+        role.partial_ssn,
+        role.partial_dob,
+        role.roles,
+        role.reports,
+        role.discounts,
+        role.bank_accounts,
+      ];
+
+      return arr.map((item) => {
+        showFunctions(item);
+      });
+    }
+  };
   return (
     <Fragment>
       <TableContainer sx={{ overflowX: "auto" }}>
@@ -72,40 +136,7 @@ const RoleFuncions = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {functions.map((data) => (
-              <TableRow>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  {data}
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-                <TableCell sx={{ border: " 1px solid #dcdcdc" }}>
-                  <Switch />
-                </TableCell>
-              </TableRow>
-            ))}
+            {!loading ? displayFunctions() : <p>Loading...</p>}
           </TableBody>
         </Table>
       </TableContainer>

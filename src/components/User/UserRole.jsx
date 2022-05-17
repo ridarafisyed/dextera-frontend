@@ -9,6 +9,7 @@ import {
   Typography,
   ListItem,
   ListItemText,
+  IconButton,
   Dialog,
   DialogActions,
   DialogContent,
@@ -24,6 +25,7 @@ import RoleFuncions from "./RoleFuncions";
 
 const UserRole = () => {
   const [roles, setRoles] = useState([]);
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
@@ -75,6 +77,9 @@ const UserRole = () => {
           />
         );
       });
+  };
+  const handleList = (id) => {
+    setRole(id);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -151,19 +156,23 @@ const UserRole = () => {
               <Box mt={1}>
                 <List>
                   <ListItem disablePadding>
-                    <ListItemText>{data.name}</ListItemText>
-                    <Button
-                      variant="contained"
-                      value={data.id}
-                      size="small"
-                      onClick={() => handleDelete(data.id)}
-                      sx={{
-                        borderRadius: "0.5rem",
-                        float: "right",
-                      }}
-                    >
-                      <ClearIcon />
-                    </Button>
+                    <span>
+                      <Button onClick={() => setRole(data.id)}>
+                        {data.name}
+                      </Button>
+                      <IconButton
+                        variant="contained"
+                        value={data.id}
+                        size="small"
+                        onClick={() => handleDelete(data.id)}
+                        sx={{
+                          borderRadius: "0.5rem",
+                          float: "right",
+                        }}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    </span>
                   </ListItem>
                 </List>
               </Box>
@@ -173,7 +182,11 @@ const UserRole = () => {
           )}
         </Grid>
         <Grid item lg={10}>
-          <RoleFuncions data={roles} />
+          {role !== null ? (
+            <RoleFuncions data={role} />
+          ) : (
+            <p>please select role</p>
+          )}
         </Grid>
       </Grid>
     </Fragment>

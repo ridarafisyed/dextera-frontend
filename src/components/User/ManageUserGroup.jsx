@@ -130,6 +130,46 @@ const ManageUserGroup = () => {
         );
       });
   };
+  const showGroup = () => {
+    if (group.length === 0) {
+      return <p> No data found...</p>;
+    } else {
+      return group.map((data) => (
+        <Box mt={1}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText>{data.name}</ListItemText>
+              <Button
+                variant="contained"
+                value={data.id}
+                onClick={() => handleDelete(data.id)}
+                sx={{
+                  borderRadius: "0.5rem",
+                  float: "right",
+                }}
+              >
+                <ClearIcon />
+              </Button>
+            </ListItem>
+          </List>
+        </Box>
+      ));
+    }
+  };
+  const showUser = () => {
+    if (userData.length === 0) return <p>No Data Found</p>;
+    else
+      userData.map((data) => {
+        return (
+          <TableRow>
+            <TableCell>{data.f_name}</TableCell>
+            <TableCell>{data.l_name}</TableCell>
+            <TableCell>{data.role}</TableCell>
+            <TableCell>{data.group}</TableCell>
+          </TableRow>
+        );
+      });
+  };
   return (
     <Fragment>
       <Grid container spacing={2}>
@@ -226,30 +266,7 @@ const ManageUserGroup = () => {
               </Button>
             </DialogActions>
           </Dialog>
-          {/* {!loading ? (
-            group.map((data) => (
-              <Box mt={1}>
-                <List>
-                  <ListItem disablePadding>
-                    <ListItemText>{data.name}</ListItemText>
-                    <Button
-                      variant="contained"
-                      value={data.id}
-                      onClick={() => handleDelete(data.id)}
-                      sx={{
-                        borderRadius: "0.5rem",
-                        float: "right",
-                      }}
-                    >
-                      <ClearIcon />
-                    </Button>
-                  </ListItem>
-                </List>
-              </Box>
-            ))
-          ) : (
-            <Typography>Loading ...</Typography>
-          )} */}
+          {!loading ? showGroup() : <Typography>Loading ...</Typography>}
         </Grid>
         <Grid item lg={9}>
           <TableContainer>
@@ -270,20 +287,7 @@ const ManageUserGroup = () => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {/* {loadingUser
-                  ? null
-                  : userData?.map((data) => {
-                      return (
-                        <TableRow>
-                          <TableCell>{data.f_name}</TableCell>
-                          <TableCell>{data.l_name}</TableCell>
-                          <TableCell>{data.role}</TableCell>
-                          <TableCell>{data.group}</TableCell>
-                        </TableRow>
-                      );
-                    })} */}
-              </TableBody>
+              <TableBody>{loadingUser ? null : showUser()}</TableBody>
             </Table>
           </TableContainer>
         </Grid>
