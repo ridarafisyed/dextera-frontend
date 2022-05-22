@@ -62,6 +62,7 @@ import Templates from "./components/Template/Templates";
 
 import Contact from "./components/Contact/Contact";
 import UserRole from "./components/User/UserRole";
+import ManageRole from "./components/User/ManageRole";
 import ManageUserGroup from "./components/User/ManageUserGroup";
 
 const App = () => {
@@ -111,7 +112,7 @@ const App = () => {
 
                     {/* <PrivateRoutes path="/create-user" component={CreateUser} /> */}
                     <PrivateRoutes path="/users" component={User} />
-                    <PrivateRoutes path="/user-roles" component={UserRole} />
+                    <PrivateRoutes path="/user-roles" component={ManageRole} />
                     <PrivateRoutes
                       path="/user-groups"
                       component={ManageUserGroup}

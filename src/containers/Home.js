@@ -2,14 +2,18 @@
 
 import React, { useState, useEffect, Fragment } from "react";
 
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 import AdminDashboard from "../components/Dashboard/UserRoles/AdminDashboard";
 import ClientDashboard from "../components/Dashboard/UserRoles/ClientDashboard";
 import LawyerDashboard from "../components/Dashboard/UserRoles/LawyerDashboard";
 import FirmDashboard from "../components/Dashboard/UserRoles/FirmDashboard";
 
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
+    const { user } = useSelector(
+      (state) => state.auth 
+    )
+
   // checker type of user
   const [localuser, setLocalUser] = useState({
     username: "Guest",
@@ -43,9 +47,5 @@ const Dashboard = ({ user }) => {
   };
   return <>{dashboardRedirect()}</>;
 };
-const mapStateToProps = (state) => ({
-  // isAuthenticated: state.auth.isAuthenticated
-  user: state.auth.user,
-});
 
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

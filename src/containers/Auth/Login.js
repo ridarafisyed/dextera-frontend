@@ -14,6 +14,7 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
+import AlertMassage from "../../components/Alerts/Alerts";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
@@ -25,6 +26,7 @@ const Login = ({ login, isAuthenticated }) => {
     email: "",
     password: "",
   });
+  const [statusCode, setStatusCode] = useState(0)
 
   const { username, email, password } = formData;
 
@@ -34,7 +36,10 @@ const Login = ({ login, isAuthenticated }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    login(username, email, password);
+    let code =  login(username, email, password);
+    // setStatusCode(code)
+    
+    console.log(code)
   };
 
   if (isAuthenticated) {

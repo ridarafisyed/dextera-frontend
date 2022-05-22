@@ -22,7 +22,11 @@ import { Chat, Report } from "@mui/icons-material";
 
 import Footer from "../components/Footer/Footer";
 
-const InnerLayout = ({ isAuthenticated, children }) => {
+const InnerLayout = ({ children }) => {
+  const { user, isAuthenticated} = useSelector(
+    (state) => state.auth
+  )
+
   const theme = useTheme();
 
   const isDesktopOrLaptop = useMediaQuery({
@@ -159,6 +163,8 @@ const InnerLayout = ({ isAuthenticated, children }) => {
             {children}
           </Grid>
         )}
+        {isAuthenticated? 
+        <>
         <Fab
           size="large"
           sx={
@@ -220,12 +226,11 @@ const InnerLayout = ({ isAuthenticated, children }) => {
         >
           <Chatting />
         </Popover>
+        </>
+        : null}
       </Grid>
     </Paper>
   );
 };
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
 
-export default connect(mapStateToProps)(InnerLayout);
+export default InnerLayout;

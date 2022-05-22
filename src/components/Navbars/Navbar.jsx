@@ -176,7 +176,7 @@ const Navbar = () => {
         {timeFormater()}
         <Switch
           size="small"
-          defaultChecked
+          
           checked={checked}
           onChange={handleChange}
           inputProps={{ "aria-label": "controlled" }}

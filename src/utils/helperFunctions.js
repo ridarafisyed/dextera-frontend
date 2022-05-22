@@ -1,4 +1,10 @@
 /** @format */
+const CONFIG = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
 
 export function formatAMPM(date) {
   var hours = date.getHours();

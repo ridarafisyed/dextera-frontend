@@ -671,7 +671,7 @@ const ManageUser = () => {
         <TableContainer>
           <Table size="small">
             <TableHead>
-              <TableRow bgColor="#796ef0">
+              <TableRow sx={{backgroundColor:"#796ef0"}}>
                 <TableCell>
                   <Typography color="white">First Name</Typography>
                 </TableCell>

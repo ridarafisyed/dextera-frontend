@@ -53,6 +53,11 @@ import { NavBarSecResponsive } from "./DrawerComp";
 
 const NavbarSec = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const { user } = useSelector(
+    (state) => state.auth
+  )
+
+  
 
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
   const isDesktopOrLaptop = useMediaQuery({
@@ -60,7 +65,7 @@ const NavbarSec = () => {
   });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const isWeekly = useSelector((state) => state.data.isWeekly);
-  const user = useSelector((state) => state.auth.user);
+  
 
   const dispatch = useDispatch();
 
@@ -383,7 +388,7 @@ const NavbarSec = () => {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
               >
-                <Person /> {localuser.username} - ({localuser.username} )
+                <Person /> {user.username} - ({user.username} )
               </Button>
               <Button
                 color="inherit"

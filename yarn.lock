@@ -4706,6 +4706,11 @@
   "resolved" "https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-0.2.0.tgz"
   "version" "0.2.0"
 
+"deep-diff@^0.3.5":
+  "integrity" "sha1-wB3mPvsO7JeYgB1Ax+Da4ltYLIQ="
+  "resolved" "https://registry.npmjs.org/deep-diff/-/deep-diff-0.3.8.tgz"
+  "version" "0.3.8"
+
 "deep-equal@^1.0.1":
   "integrity" "sha512-yd9c5AdiqVcR+JjcwUQb9DkhJc8ngNr0MahEBGvDiJw8puWab2yZlh+nkasOnZP+EGTAP6rRp2JzJhJZzvNF8g=="
   "resolved" "https://registry.npmjs.org/deep-equal/-/deep-equal-1.1.1.tgz"
@@ -11105,7 +11110,7 @@
     "strip-ansi" "5.0.0"
     "text-table" "0.2.0"
 
-"react-dom@*", "react-dom@^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.1 || ^17", "react-dom@^16.8.5 || ^17.0.0", "react-dom@^17.0.0", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2", "react-dom@>= 16.3.0", "react-dom@>= 16.8.0", "react-dom@>=16.6.0", "react-dom@>=16.8.0":
+"react-dom@*", "react-dom@^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.1 || ^17", "react-dom@^16.8.5 || ^17.0.0", "react-dom@^17.0.0", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2", "react-dom@>= 16.3.0", "react-dom@>= 16.8.0", "react-dom@>=16", "react-dom@>=16.6.0", "react-dom@>=16.8.0":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
@@ -11324,6 +11329,13 @@
     "shallowequal" "^1.1.0"
     "throttle-debounce" "^3.0.1"
 
+"react-toastify@^9.0.1":
+  "integrity" "sha512-c2zeZHkCX+WXuItS/JRqQ/8CH8Qm/je+M0rt09xe9fnu5YPJigtNOdD8zX4fwLA093V2am3abkGfOowwpkrwOQ=="
+  "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-9.0.1.tgz"
+  "version" "9.0.1"
+  dependencies:
+    "clsx" "^1.1.1"
+
 "react-transition-group@^4.4.0", "react-transition-group@^4.4.1", "react-transition-group@^4.4.2":
   "integrity" "sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg=="
   "resolved" "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.2.tgz"
@@ -11334,7 +11346,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@*", "react@^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^16.2.0 || ^17", "react@^16.8.0", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^16.8.1 || ^17", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@>= 16.3", "react@>= 16.3.0", "react@>= 16.8.0", "react@>=0.13", "react@>=0.14.0", "react@>=15", "react@>=16.12.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@17.0.2":
+"react@*", "react@^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react@^16.2.0 || ^17", "react@^16.8.0", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^16.8.1 || ^17", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^17.0.0", "react@^17.0.0 || ^18.0.0", "react@^17.0.2", "react@>= 16.3", "react@>= 16.3.0", "react@>= 16.8.0", "react@>=0.13", "react@>=0.14.0", "react@>=15", "react@>=16", "react@>=16.12.0", "react@>=16.3.0", "react@>=16.6.0", "react@>=16.8", "react@>=16.8.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
@@ -11491,6 +11503,13 @@
   "integrity" "sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A=="
   "resolved" "https://registry.npmjs.org/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz"
   "version" "2.13.9"
+
+"redux-logger@^3.0.6":
+  "integrity" "sha1-91VZZvMJjzyIYExEnPC69XeCdL8="
+  "resolved" "https://registry.npmjs.org/redux-logger/-/redux-logger-3.0.6.tgz"
+  "version" "3.0.6"
+  dependencies:
+    "deep-diff" "^0.3.5"
 
 "redux-persist@^6.0.0":
   "integrity" "sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ=="

@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Paper,
 } from "@mui/material";
 
 import ClearIcon from "@mui/icons-material/Clear";
@@ -22,6 +23,8 @@ import { ActionAlerts } from "../../utils/ActionAlerts";
 
 import { CONFIG } from "../../api/MatterApi";
 import RoleFuncions from "./RoleFuncions";
+// import {fetchRoleFn, updateRoleFn, reset} from "../../redux/features/roleFnSlice"
+import {useDispatch} from "react-redux"
 
 const UserRole = () => {
   const [roles, setRoles] = useState([]);
@@ -32,6 +35,7 @@ const UserRole = () => {
   const [formData, setFormData] = useState({
     name: "",
   });
+  const dispatch = useDispatch()
 
   const { name } = formData;
 
@@ -50,7 +54,7 @@ const UserRole = () => {
 
   const FetchData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/role/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
       .then((res) => {
         console.log(res.data);
         setLoading(false);
@@ -78,14 +82,16 @@ const UserRole = () => {
         );
       });
   };
-  const handleList = (id) => {
+  const selectRole = (id) => {
+    
     setRole(id);
+    // dispatch(fetchRoleFn(id))
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     const body = JSON.stringify({ name });
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/role/`, body, CONFIG)
+      .post(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, body, CONFIG)
       .then((res) => {
         FetchData();
         return (
@@ -107,7 +113,8 @@ const UserRole = () => {
     <Fragment>
       <Grid container spacing={2}>
         <Grid item lg={12}></Grid>
-        <Grid item lg={2}>
+        <Grid item lg={2} component={Paper} elevation={5}>
+          <Box p={2}>
           <Button
             variant="contained"
             onClick={handleClickOpen}
@@ -152,12 +159,12 @@ const UserRole = () => {
             </DialogActions>
           </Dialog>
           {!loading ? (
-            roles.map((data) => (
-              <Box mt={1}>
+            roles.map((data, index) => (
+              <Box key={index}>
                 <List>
                   <ListItem disablePadding>
                     <span>
-                      <Button onClick={() => setRole(data.id)}>
+                      <Button onClick={() => selectRole(data.id)}>
                         {data.name}
                       </Button>
                       <IconButton
@@ -180,10 +187,11 @@ const UserRole = () => {
           ) : (
             <Typography>Loading ...</Typography>
           )}
+          </Box>
         </Grid>
         <Grid item lg={10}>
           {role !== null ? (
-            <RoleFuncions data={role} />
+            <RoleFuncions/>
           ) : (
             <p>please select role</p>
           )}

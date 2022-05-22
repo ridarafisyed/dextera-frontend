@@ -7,10 +7,13 @@ import errors from "./errors";
 import messages from "./messages";
 import auth from "./auth";
 import data from "./data";
-import sidebar from "../redux/features/sidebarSlice";
-import tabs from "../redux/features/tabSlice";
-import newTabs from "../redux/features/searchTabSlice";
-import favorite from "../redux/features/favoriteSlice";
+import sidebarReducer from "../redux/features/sidebarSlice";
+import tabsReducer from "../redux/features/tabSlice";
+import newTabsReducer from "../redux/features/searchTabSlice";
+import favoriteReducer from "../redux/features/favoriteSlice";
+import rolefnsReducer from "../redux/features/roleFnSlice";
+import permissionReducer from "../redux/features/permissionSlice"
+// import auth from "../redux/features/authSlice"
 
 export default combineReducers({
   auth,
@@ -18,8 +21,9 @@ export default combineReducers({
   errors,
   messages,
   data,
-  sidebar,
-  favorite,
-  tabs,
-  newTabs,
+  sidebar: sidebarReducer,
+  favorite: favoriteReducer ,
+  tabs: tabsReducer,
+  newTabs: newTabsReducer,
+  permissions: permissionReducer, 
 });
