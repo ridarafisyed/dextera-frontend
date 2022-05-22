@@ -36,10 +36,9 @@ const Login = ({ login, isAuthenticated }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    let code =  login(username, email, password);
+     login(username, email, password);
     // setStatusCode(code)
-    
-    console.log(code)
+  
   };
 
   if (isAuthenticated) {

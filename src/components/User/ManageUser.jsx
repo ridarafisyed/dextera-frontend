@@ -177,7 +177,7 @@ const ManageUser = () => {
   };
   const FetchRoleData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/get-role-list/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
       .then((res) => {
         console.log(res.data);
         setLoading(false);

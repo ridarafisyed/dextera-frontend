@@ -257,7 +257,7 @@ const ManageRole = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-             { permissions.permissions.length > 0 && role !== null ?
+             {(role !== null && permissions.permissions.length > 0) ?
                   permissions.permissions.map((permission)=>(
                        <TableRow>
                          <TableCell >{permission.name}</TableCell>

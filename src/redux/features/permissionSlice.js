@@ -116,6 +116,7 @@ export const permissionSlice = createSlice({
         state.isError = true
         state.message = action.payload
       })
+      
   },
 })
 

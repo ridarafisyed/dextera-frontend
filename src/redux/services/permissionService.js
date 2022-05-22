@@ -31,11 +31,18 @@ const deletePermission = async (id) => {
 
   return response.data
 }
+const updatePermission = async (data) => {
+
+  const response = await axios.put(`${process.env.REACT_APP_API_URL}/user/auth/permissions/${data.id}/`, CONFIG)
+
+  return response.data
+}
 
 const permissionService = {
   createpermission,
   getPermissions,
   deletePermission,
+  updatePermission
 }
 
 export default permissionService
