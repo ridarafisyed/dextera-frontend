@@ -27,7 +27,7 @@ import axios from "axios";
 
 import { ActionAlerts } from "../../utils/ActionAlerts";
 import { CONFIG } from "../../api/MatterApi";
-
+import NumberFormat from 'react-number-format';
 import CreateUser from "./CreateUser";
 import {
   Search,
@@ -38,10 +38,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import { useToggle } from "../../context/useToggle";
 
-const ManageUser = () => {
-  const [activityData, setActivityData] = useState([]);
+const User = () => {
+  const [usersData, setUsersData] = useState([]);
 
   const [isActive, setIsActive] = useToggle(false);
+  const [searchItem, setSearchItem] = useState("")
 
   const [roles, setRoles] = useState([]);
   const [role, setRole] = useState("");
@@ -108,7 +109,13 @@ const ManageUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const body = JSON.stringify({
+    const first_name = f_name;
+    const last_name = l_name;
+    const username = f_name.toLowerCase() + l_name.toLowerCase()
+    const password = username
+    const email = c_email
+    const body1 = JSON.stringify({username, first_name, last_name, email, password})
+    const body2 = JSON.stringify({
       f_name,
       m_name,
       l_name,
@@ -131,9 +138,9 @@ const ManageUser = () => {
       work_no,
       phone_ext,
     });
-
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/api/create-member/`, body, CONFIG)
+    const axiosReguest1 = axios.post(`${process.env.REACT_APP_API_URL}/user/auth/register-firm-employee/`,body1, CONFIG)
+    const axiosReguest2 = axios.post(`${process.env.REACT_APP_API_URL}/api/create-member/`, body2, CONFIG)
+      axios.all(axiosReguest1, axiosReguest2)   
       .then((res) => {
         FetchData();
         return (
@@ -166,6 +173,22 @@ const ManageUser = () => {
         );
       });
   };
+  const handlleDeactivate = (id) => {
+    
+    axios
+      .put(
+        `${process.env.REACT_APP_API_URL}/user/auth/is-active-user/${id}/`, false,
+        CONFIG,
+      )
+      .then((res) => {
+        FetchData();
+        return (
+          <ActionAlerts
+            value={{ status: res.statusText, message: "Success" }}
+          />
+        );
+      });
+  };
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -179,7 +202,7 @@ const ManageUser = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setLoading(false);
         setStatus(res.statusText);
         setRoles(res.data);
@@ -192,9 +215,10 @@ const ManageUser = () => {
   };
   const FetchGroupData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/group/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/groups/`, CONFIG)
       .then((res) => {
         setLoading2(false);
+        console.log(res.data)
         setGroups(res.data);
       })
       .catch((err) => {
@@ -204,11 +228,11 @@ const ManageUser = () => {
 
   const FetchData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/create-member/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/users-list/`, CONFIG)
       .then((res) => {
         setLoading(false);
         setStatus(res.statusText);
-        setActivityData(res.data);
+        setUsersData(res.data);
       })
       .catch((err) => {
         setLoading(false);
@@ -221,23 +245,32 @@ const ManageUser = () => {
     FetchGroupData();
   }, []);
   const showUsers = () => {
-    if (activityData.length === 0) {
+    if (usersData.length === 0) {
       return <p>No data found...</p>;
     } else
-      return activityData.map((data) => (
-        <TableRow>
-          <TableCell>{data.f_name}</TableCell>
-          <TableCell>{data.l_name}</TableCell>
-          <TableCell>{data.p_email}</TableCell>
+      return usersData.filter((val)=>{
+        if (searchItem === ""){
+          return val
+        } else if(val.first_name.toLowerCase().includes(searchItem.toLowerCase())) {
+          return val
+        }else if(val.last_name.toLowerCase().includes(searchItem.toLowerCase())) {
+          return val
+        }
+
+      }).map((data) => {if(isActive){
+        return data.is_active ? (<TableRow>
+          <TableCell>{data.first_name}</TableCell>
+          <TableCell>{data.last_name}</TableCell>
+          <TableCell>{data.email}</TableCell>
           <TableCell>{data.role}</TableCell>
           <TableCell>{data.group}</TableCell>
-          <TableCell>-</TableCell>
-          <TableCell>inactive</TableCell>
-          <TableCell>
+          <TableCell>{data.last_login}</TableCell>
+          <TableCell>{data.is_active ? "active":"inactive"}</TableCell>
+          {/* <TableCell>
             <Button
               variant="contained"
-              value={data.id}
-              onClick={() => handleDelete(data.id)}
+              value={data.is_active}
+              onClick={() => handlleDeactivate(data.id)}
               sx={{
                 borderRadius: "0.5rem",
                 float: "right",
@@ -245,9 +278,33 @@ const ManageUser = () => {
             >
               <ClearIcon />
             </Button>
-          </TableCell>
-        </TableRow>
-      ));
+          </TableCell> */}
+          <TableCell></TableCell>
+        </TableRow>) : null
+      }
+    else return <TableRow>
+          <TableCell>{data.first_name}</TableCell>
+          <TableCell>{data.last_name}</TableCell>
+          <TableCell>{data.email}</TableCell>
+          <TableCell>{data.role}</TableCell>
+          <TableCell>{data.group}</TableCell>
+          <TableCell>{data.last_login}</TableCell>
+          <TableCell>{data.is_active ? "active":"inactive"}</TableCell>
+          {/* <TableCell>
+            <Button
+              variant="contained"
+              value={data.is_active}
+              onClick={() => handlleDeactivate(data.id)}
+              sx={{
+                borderRadius: "0.5rem",
+                float: "right",
+              }}
+            >
+              <ClearIcon />
+            </Button>
+          </TableCell> */}
+          <TableCell></TableCell>
+        </TableRow>});
   };
 
   return (
@@ -264,6 +321,7 @@ const ManageUser = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange ={e => setSearchItem(e.target.value)}
             />
           </Search>
           <Button
@@ -292,8 +350,11 @@ const ManageUser = () => {
                 spacing={2}
                 mt={2}
                 sx={{
-                  "& .MuiTextField-root": { m: 1, width: "14rem" },
+                  "& .MuiTextField-root": { m: 1, width: "14rem", "input::-webkit-outer-spin-button": {
+                    webkitAappearance: "none"
+                  },  },
                 }}
+
               >
                 <Grid item lg={3}>
                   <TextField
@@ -348,17 +409,21 @@ const ManageUser = () => {
                   />
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="rate"
-                    label="Rate $"
-                    type="number"
-                    onChange={(e) => onChange(e)}
-                    id="rate"
-                    autoComplete="new-password"
-                  />
+              
+                  <NumberFormat
+                      id="rate"
+                      customInput={TextField}
+                      size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="rate"
+                      label="Rate $"
+                      onChange={(e) => onChange(e)}
+                      format="####.##"
+                      type="tel"
+                      autoComplete="new-password"
+                      thousandSeparator={true}
+                    />
                 </Grid>
                 <Grid item lg={6}>
                   <Stack direction="row" spacing={2} ml={2}>
@@ -463,17 +528,19 @@ const ManageUser = () => {
                   />
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="bar_no"
-                    label="Bar #"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="bar_no"
-                    autoComplete="new-password"
-                  />
+                   <NumberFormat
+                      customInput={TextField}
+                      size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="bar_no"
+                      label="Bar #"
+                      onChange={(e) => onChange(e)}
+                      id="bar_no"
+                      autoComplete="new-password"
+                      format="######"
+                      type="tel"
+                    />
                 </Grid>
               </Grid>
               <Box mt={4} mb={2}>
@@ -543,30 +610,34 @@ const ManageUser = () => {
                   />
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="zip"
-                    label="Zip"
-                    type="number"
-                    onChange={(e) => onChange(e)}
-                    id="zip"
-                    autoComplete="new-password"
-                  />
+                  <NumberFormat
+                      customInput={TextField}
+                      format="#####"
+                      size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="zip"
+                      label="Zip"
+                      type="tel"
+                      onChange={(e) => onChange(e)}
+                      id="zip"
+                      autoComplete="new-password"
+                    />
                 </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="ext"
-                    label="+4"
-                    type="number"
-                    onChange={(e) => onChange(e)}
-                    id="ext"
-                    autoComplete="new-password"
-                  />
+                <Grid item lg={3}> 
+                  <NumberFormat
+                      customInput={TextField}
+                      format="####"
+                      size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="ext"
+                      label="+4"
+                      type="tel"
+                      onChange={(e) => onChange(e)}
+                      id="ext"
+                      autoComplete="new-password"
+                    />
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
@@ -589,63 +660,74 @@ const ManageUser = () => {
                   </Box>
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="mobile"
-                    label="Mobile #"
-                    type="phone"
-                    onChange={(e) => onChange(e)}
-                    id="mobile"
-                    autoComplete="new-password"
-                  />
+                  
+                  <NumberFormat
+                      customInput={TextField}
+                      format="### ### ####"
+                       size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="mobile"
+                      label="Mobile #"
+                      type="phone"
+                      onChange={(e) => onChange(e)}
+                      id="mobile"
+                      autoComplete="new-password"
+                    />
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="home"
-                    label="Home #"
-                    type="phone"
-                    onChange={(e) => onChange(e)}
-                    id="home"
-                    autoComplete="new-password"
-                  />
+                  <NumberFormat
+                      customInput={TextField}
+                      format="### ### ####"
+                       size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="home"
+                      label="Home #"
+                      type="phone"
+                      onChange={(e) => onChange(e)}
+                      id="home"
+                      autoComplete="new-password"
+                    />
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="work_no"
-                    label="Work #"
-                    type="phone"
-                    onChange={(e) => onChange(e)}
-                    id="work_no"
-                    autoComplete="new-password"
-                  />
+                  <NumberFormat
+                      customInput={TextField}
+                      format="### ### ####"
+                      size="small"
+                      margin="normal"
+                      variant="outlined"
+                      name="work"
+                      label="Work #"
+                      type="phone"
+                      onChange={(e) => onChange(e)}
+                      id="work"
+                      autoComplete="new-password"
+                    />
                 </Grid>
                 <Grid item lg={3}>
-                  <TextField
+              
+                  <NumberFormat
+                    customInput={TextField}
+                    format="####"
                     size="small"
                     margin="normal"
                     variant="outlined"
                     name="phone_ext"
                     label="Extesion"
-                    type="number"
+                    type="text"
                     onChange={(e) => onChange(e)}
                     id="phone_ext"
                     autoComplete="new-password"
-                  />
+                    />
                 </Grid>
               </Grid>
               <Grid item lg={12}>
                 <Box
                   sx={{
-                    "& .MuiButton-root": { m: 1, mr: 8 },
+                    "& .MuiButton-root": { m: 1, mr:5 },
                     float: "right",
+                    color:"white"
                   }}
                 >
                   <Button
@@ -653,11 +735,16 @@ const ManageUser = () => {
                     color="success"
                     type="submit"
                     sx={{ color: "white" }}
+                    
                   >
                     Activate
                   </Button>
-                  <Button variant="contained" color="error">
+                  
+                  <Button variant="contained" color="warning"sx={{color:"#fff"}}>
                     Deactivate
+                  </Button>
+                  <Button variant="contained" color="error" sx={{color:"#fff"}}>
+                    Delete
                   </Button>
                 </Box>
               </Grid>
@@ -671,7 +758,7 @@ const ManageUser = () => {
         <TableContainer>
           <Table size="small">
             <TableHead>
-              <TableRow sx={{backgroundColor:"#796ef0"}}>
+              <TableRow bgColor="#796ef0">
                 <TableCell>
                   <Typography color="white">First Name</Typography>
                 </TableCell>
@@ -693,9 +780,7 @@ const ManageUser = () => {
                 <TableCell>
                   <Typography color="white">Status</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography color="white">Deactivate</Typography>
-                </TableCell>
+                
                 <TableCell>
                   <Switch
                     color="success"
@@ -715,4 +800,4 @@ const ManageUser = () => {
   );
 };
 
-export default ManageUser;
+export default User;

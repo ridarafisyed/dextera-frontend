@@ -177,9 +177,9 @@ const User = () => {
   };
   const FetchRoleData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/get-role-list/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setLoading(false);
         setStatus(res.statusText);
         setRoles(res.data);
@@ -192,9 +192,10 @@ const User = () => {
   };
   const FetchGroupData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/group/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/groups/`, CONFIG)
       .then((res) => {
         setLoading2(false);
+        console.log(res.data)
         setGroups(res.data);
       })
       .catch((err) => {

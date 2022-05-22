@@ -99,7 +99,7 @@ const ManageRole = () => {
   }, []);
   const handleDelete = (id) => {
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/api/role/${id}/`, CONFIG)
+      .delete(`${process.env.REACT_APP_API_URL}/user/auth/roles/${id}/`, CONFIG)
       .then((res) => {
         FetchData();
         return (
@@ -118,6 +118,7 @@ const ManageRole = () => {
     e.preventDefault();
     const body = JSON.stringify({ name });
     axios
+      
       .post(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, body, CONFIG)
       .then((res) => {
         FetchData();

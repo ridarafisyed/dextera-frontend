@@ -7,6 +7,7 @@ import {
   Box,
   List,
   Table,
+  Paper,
   Grid,
   TableCell,
   TableContainer,
@@ -42,15 +43,16 @@ import { CONFIG } from "../../api/MatterApi";
 
 const ManageUserGroup = () => {
   const [filter, setFilter] = useState("");
+  const [searchItem, setSearchItem] = useState("")
 
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
   const [group, setGroup] = useState([]);
-  const [userData, setUserData] = useState([]);
+  const [usersData, setUsersData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
-
+  const [status, setStatus] = useState("")
   const [formData, setFormData] = useState({
     name: "",
   });
@@ -73,9 +75,12 @@ const ManageUserGroup = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/api/create-member/`, CONFIG)
       .then((res) => {
+        // setLoading(false);
+        setStatus(res.statusText);
+        setUsersData(res.data);
         setLoadingUser(false);
+        console.log(usersData)
 
-        setUserData(res.data);
       })
       .catch((err) => {
         setLoadingUser(false);
@@ -83,7 +88,7 @@ const ManageUserGroup = () => {
   };
   const FetchData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/group/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/user/auth/groups/`, CONFIG)
       .then((res) => {
         setLoading(false);
         setGroup(res.data);
@@ -98,7 +103,7 @@ const ManageUserGroup = () => {
   }, []);
   const handleDelete = (id) => {
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/api/group/${id}/`, CONFIG)
+      .delete(`${process.env.REACT_APP_API_URL}/user/auth/groups/${id}/`, CONFIG)
       .then((res) => {
         FetchData();
         return (
@@ -112,7 +117,7 @@ const ManageUserGroup = () => {
     e.preventDefault();
     const body = JSON.stringify({ name });
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/group/`, body, CONFIG)
+      .post(`${process.env.REACT_APP_API_URL}/user/auth/groups/`, body, CONFIG)
       .then((res) => {
         FetchData();
         return (
@@ -157,24 +162,38 @@ const ManageUserGroup = () => {
     }
   };
   const showUser = () => {
-    if (userData.length === 0) return <p>No Data Found</p>;
-    else
-      userData.map((data) => {
-        return (
+    if (usersData.length === 0) {
+      return <p>No data found...</p>;
+    } else
+      return usersData.filter((val)=>{
+        if (searchItem === ""){
+          return val
+        } else if((filter === "group") && (val.group.toLowerCase().includes(searchItem.toLowerCase()))) {
+          return val
+        }else if((filter === "role") &&(val.role.toLowerCase().includes(searchItem.toLowerCase()))){
+          return val
+        }
+        else if((filter === "name") &&(val.l_name.toLowerCase().includes(searchItem.toLowerCase()))){
+          return val
+        }
+        else if((filter === "name") &&(val.f_name.toLowerCase().includes(searchItem.toLowerCase()))){
+          return val
+        }
+      }).map((data) => 
           <TableRow>
             <TableCell>{data.f_name}</TableCell>
-            <TableCell>{data.l_name}</TableCell>
+            <TableCell>{data.l_name} </TableCell>
             <TableCell>{data.role}</TableCell>
             <TableCell>{data.group}</TableCell>
           </TableRow>
-        );
-      });
+  );
+    
   };
   return (
     <Fragment>
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         <Grid item lg={12}>
-          <Grid container spacing={2} direction="row">
+          <Grid container spacing={3} direction="row">
             <Grid item lg={3}>
               <Typography variant="h5" component="h5" m={1} color="primary">
                 Manage Group
@@ -198,7 +217,7 @@ const ManageUserGroup = () => {
                   >
                     <MenuItem value="name">By Name</MenuItem>
                     <MenuItem value="role">By Role</MenuItem>
-                    <MenuItem value="gorup">By Group</MenuItem>
+                    <MenuItem value="group">By Group</MenuItem>
                   </Select>
                 </FormControl>
                 <Search sx={{ width: "20rem", height: "2.5rem", m: 1 }}>
@@ -208,13 +227,14 @@ const ManageUserGroup = () => {
                   <StyledInputBase
                     placeholder="Search…"
                     inputProps={{ "aria-label": "search" }}
+                    onChange ={e => setSearchItem(e.target.value)}
                   />
                 </Search>
               </Stack>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={3} component={Paper} p={3} elevation={3}>
           <Typography
             variant="h5"
             component="h5"
@@ -287,7 +307,7 @@ const ManageUserGroup = () => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{loadingUser ? null : showUser()}</TableBody>
+              <TableBody>{!loadingUser ? showUser() : <>Loading.. </>}</TableBody>
             </Table>
           </TableContainer>
         </Grid>

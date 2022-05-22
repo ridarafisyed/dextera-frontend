@@ -12,9 +12,10 @@ import ManageRole from "./ManageRole"
 const Index = () => {
   return (
     <Fragment>
-      <Tabs>
+      <ManageUser/>
+      {/* <Tabs>
         <div label="Manage Users">
-          <User />
+          <ManageUser />
         </div>
 
         <div label="User Group">
@@ -23,7 +24,7 @@ const Index = () => {
         <div label="User Role">
           <ManageRole />
         </div>
-      </Tabs>
+      </Tabs> */}
     </Fragment>
   );
 };
