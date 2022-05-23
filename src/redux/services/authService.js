@@ -1,39 +1,48 @@
-import axios from 'axios'
+/** @format */
 
-const API_URL = `${process.env.REACT_APP_API_URL}/user/auth/`
+import axios from "axios";
+import { CONFIG } from "../../api/MatterApi";
+
+const API_URL = "https://dextera-lawfirm.herokuapp.com/user/auth/";
 
 // Register user
-const register = async (userData) => {
-  const response = await axios.post(API_URL, userData)
+const signUp = async (userData) => {
+	const response = await axios.post(API_URL + "register", userData, CONFIG);
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
-  }
+	if (response.data) {
+		localStorage.setItem("user", JSON.stringify(response.data.user));
+		localStorage.setItem("token", JSON.stringify(response.data.token));
+	}
 
-  return response.data
-}
+	return response.data;
+};
 
 // Login user
-const login = async (userData) => {
-  const response = await axios.post(API_URL + 'login', userData)
+const signIn = async (userData) => {
+	const response = await axios.post(API_URL + "login", userData, CONFIG);
 
-  if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data))
-  }
+	if (response.data) {
+		localStorage.setItem("user", JSON.stringify(response.data));
+	}
 
-  return response.data
-}
+	return response.data;
+};
 
 // Logout user
-const logout = () => {
-    
-  localStorage.removeItem('user')
-}
+const signOut = async (token) => {
+	const response = await axios.post(API_URL + "logout", token);
+	if (response.data) {
+		localStorage.removeItem("user");
+		localStorage.removeItem("token");
+	}
+
+	// return response.data
+};
 
 const authService = {
-  register,
-  logout,
-  login,
-}
+	signIn,
+	signOut,
+	signUp,
+};
 
-export default authService
+export default authService;

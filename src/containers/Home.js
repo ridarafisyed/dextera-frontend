@@ -10,42 +10,40 @@ import LawyerDashboard from "../components/Dashboard/UserRoles/LawyerDashboard";
 import FirmDashboard from "../components/Dashboard/UserRoles/FirmDashboard";
 
 const Dashboard = () => {
-    const { user } = useSelector(
-      (state) => state.auth 
-    )
+	const { user } = useSelector((state) => state.auth.user);
 
-  // checker type of user
-  const [localuser, setLocalUser] = useState({
-    username: "Guest",
-    is_firm: false,
-    is_lawyer: false,
-    is_client: true,
-  });
+	// checker type of user
+	const [localuser, setLocalUser] = useState({
+		username: "Guest",
+		is_firm: false,
+		is_lawyer: false,
+		is_client: true,
+	});
 
-  useEffect(() => {
-    if (user) {
-      setLocalUser({
-        username: user.username,
-        is_firm: user.is_firm,
-        is_lawyer: user.is_lawyer,
-        is_client: user.is_client,
-      });
-    }
-  }, [user]);
+	useEffect(() => {
+		if (user) {
+			setLocalUser({
+				username: user.username,
+				is_firm: user.is_firm,
+				is_lawyer: user.is_lawyer,
+				is_client: user.is_client,
+			});
+		}
+	}, [user]);
 
-  const dashboardRedirect = () => {
-    switch (user.username) {
-      case "admin":
-        return <AdminDashboard />;
-      case "firm":
-        return <FirmDashboard />;
-      case "lawyer":
-        return <LawyerDashboard />;
-      default:
-        return <ClientDashboard />;
-    }
-  };
-  return <>{dashboardRedirect()}</>;
+	const dashboardRedirect = () => {
+		switch (user.username) {
+			case "admin":
+				return <AdminDashboard />;
+			case "firm":
+				return <FirmDashboard />;
+			case "lawyer":
+				return <LawyerDashboard />;
+			default:
+				return <ClientDashboard />;
+		}
+	};
+	return <>{dashboardRedirect()}</>;
 };
 
 export default Dashboard;
