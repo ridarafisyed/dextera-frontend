@@ -110,6 +110,7 @@ const Signup = ({ register, isAuthenticated }) => {
           </Typography>
           <Box
             component="form"
+            autoComplete="off"
             Validate
             sx={{ mt: 1 }}
             onSubmit={(e) => onSubmit(e)}
@@ -126,7 +127,6 @@ const Signup = ({ register, isAuthenticated }) => {
                   name="username"
                   value={username}
                   onChange={(e) => onChange(e)}
-                  autoComplete="new-password"
                   autoFocus
                 />
               </Grid>
@@ -141,7 +141,6 @@ const Signup = ({ register, isAuthenticated }) => {
                   name="first_name"
                   value={first_name}
                   onChange={(e) => onChange(e)}
-                  autoComplete="new-password"
                   autoFocus
                 />
               </Grid>
@@ -186,7 +185,6 @@ const Signup = ({ register, isAuthenticated }) => {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="new-password"
                 value={password}
                 onChange={(e) => onChange(e)}
               />
@@ -203,7 +201,6 @@ const Signup = ({ register, isAuthenticated }) => {
                 value={re_password}
                 onChange={(e) => onChange(e)}
                 id="re_password"
-                autoComplete="new-password"
               />
             </Grid>
             <Grid item xs={12}>

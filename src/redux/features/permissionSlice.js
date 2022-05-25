@@ -47,6 +47,23 @@ export const getPermissions = createAsyncThunk(
 		}
 	},
 );
+export const updatePermission = createAsyncThunk(
+	"permissions/update",
+	async ({id, value}, thunkAPI) => {
+
+		try {
+			return await permissionService.updatePermission(id, value);
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			return thunkAPI.rejectWithValue(message);
+		}
+	},
+);
 
 // Delete user permission
 export const deletePermission = createAsyncThunk(
@@ -71,81 +88,6 @@ export const permissionSlice = createSlice({
 	initialState,
 	reducers: {
 		reset: (state) => initialState,
-		updateIsView: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_view = !permission.is_view;
-			}
-		},
-		updateIsEdit: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_edit = !permission.is_edit;
-			}
-		},
-		updateIsCreate: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_create = !permission.is_create;
-			}
-		},
-		updateIsDelete: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_delete = !permission.is_delete;
-			}
-		},
-		updateIsContacts: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_contacts = !permission.is_contacts;
-			}
-		},
-		updateIsTeam: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_team = !permission.is_team;
-			}
-		},
-		updateIsOffice: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_office = !permission.is_office;
-			}
-		},
-		updateIsRegion: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload,
-			);
-			if (permission) {
-				permission.is_region = !permission.is_region;
-			}
-		},
-		updateIsAll: (state, action) => {
-			const permission = state.permissions.permissions.find(
-				(item) => item.id === action.payload.id,
-			);
-			if (permission) {
-				permission.is_contacts = !action.payload.value;
-				permission.is_team = !action.payload.value;
-				permission.is_office = !action.payload.value;
-				permission.is_region = !action.payload.value;
-			}
-		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -175,6 +117,20 @@ export const permissionSlice = createSlice({
 				state.isError = true;
 				state.message = action.payload;
 			})
+			.addCase(updatePermission.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(updatePermission.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;	
+				getPermissions()
+
+			})
+			.addCase(updatePermission.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			})
 			.addCase(deletePermission.pending, (state) => {
 				state.isLoading = true;
 			})
@@ -194,15 +150,6 @@ export const permissionSlice = createSlice({
 });
 
 export const {
-	reset,
-	updateIsView,
-	updateIsEdit,
-	updateIsCreate,
-	updateIsDelete,
-	updateIsContacts,
-	updateIsTeam,
-	updateIsOffice,
-	updateIsRegion,
-	updateIsAll,
+	reset
 } = permissionSlice.actions;
 export default permissionSlice.reducer;

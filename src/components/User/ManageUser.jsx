@@ -173,10 +173,9 @@ const User = () => {
         );
       });
   };
-  const handlleDeactivate = (id) => {
-    
+  const handleDeactivate = (id) => {
     axios
-      .put(
+      .patch(
         `${process.env.REACT_APP_API_URL}/user/auth/is-active-user/${id}/`, false,
         CONFIG,
       )
@@ -266,19 +265,7 @@ const User = () => {
           <TableCell>{data.group}</TableCell>
           <TableCell>{data.last_login}</TableCell>
           <TableCell>{data.is_active ? "active":"inactive"}</TableCell>
-          {/* <TableCell>
-            <Button
-              variant="contained"
-              value={data.is_active}
-              onClick={() => handlleDeactivate(data.id)}
-              sx={{
-                borderRadius: "0.5rem",
-                float: "right",
-              }}
-            >
-              <ClearIcon />
-            </Button>
-          </TableCell> */}
+
           <TableCell></TableCell>
         </TableRow>) : null
       }
@@ -290,19 +277,7 @@ const User = () => {
           <TableCell>{data.group}</TableCell>
           <TableCell>{data.last_login}</TableCell>
           <TableCell>{data.is_active ? "active":"inactive"}</TableCell>
-          {/* <TableCell>
-            <Button
-              variant="contained"
-              value={data.is_active}
-              onClick={() => handlleDeactivate(data.id)}
-              sx={{
-                borderRadius: "0.5rem",
-                float: "right",
-              }}
-            >
-              <ClearIcon />
-            </Button>
-          </TableCell> */}
+
           <TableCell></TableCell>
         </TableRow>});
   };
@@ -334,6 +309,7 @@ const User = () => {
           </Button>
           <Dialog
             component="form"
+            autoComplete="off"
             Validate
             onSubmit={(e) => handleSubmit(e)}
             open={open}
@@ -358,6 +334,7 @@ const User = () => {
               >
                 <Grid item lg={3}>
                   <TextField
+                    required
                     size="small"
                     margin="normal"
                     variant="outlined"
@@ -366,11 +343,11 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="f_name"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
+                    required
                     size="small"
                     margin="normal"
                     variant="outlined"
@@ -379,11 +356,11 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="m_name"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
+                    required
                     size="small"
                     margin="normal"
                     variant="outlined"
@@ -392,11 +369,11 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="l_name"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
+                    required
                     size="small"
                     margin="normal"
                     variant="outlined"
@@ -405,12 +382,12 @@ const User = () => {
                     type="email"
                     onChange={(e) => onChange(e)}
                     id="c_email"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
               
                   <NumberFormat
+                      required
                       id="rate"
                       customInput={TextField}
                       size="small"
@@ -421,7 +398,6 @@ const User = () => {
                       onChange={(e) => onChange(e)}
                       format="####.##"
                       type="tel"
-                      autoComplete="new-password"
                       thousandSeparator={true}
                     />
                 </Grid>
@@ -455,6 +431,7 @@ const User = () => {
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
+                    required
                     select
                     size="small"
                     margin="normal"
@@ -463,7 +440,6 @@ const User = () => {
                     label="Role"
                     onChange={(e) => setRole(e.target.value)}
                     id="role"
-                    autoComplete="new-password"
                   >
                     {!loading ? (
                       roles.map((data) => (
@@ -479,6 +455,8 @@ const User = () => {
 
                 <Grid item lg={3}>
                   <TextField
+                    required
+                    select
                     size="small"
                     margin="normal"
                     variant="outlined"
@@ -487,11 +465,16 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="time_zone"
-                    autoComplete="new-password"
-                  />
+                  >
+                    <MenuItem value="AKST">Alaska Standard Time</MenuItem>
+                    <MenuItem value="PST">Pacific Standard Time</MenuItem>
+                    <MenuItem value="CST">Central Standard Time</MenuItem>
+                    <MenuItem value="EST">Eastern Standard Time</MenuItem>
+                  </TextField>
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
+                    required
                     select
                     size="small"
                     margin="normal"
@@ -501,7 +484,6 @@ const User = () => {
                     type="text"
                     onChange={(e) => setGroup(e.target.value)}
                     id="group"
-                    autoComplete="new-password"
                   >
                     {!loading2 ? (
                       groups.map((data) => (
@@ -516,6 +498,7 @@ const User = () => {
                 </Grid>
                 <Grid item lg={3}>
                   <TextField
+                  required
                     size="small"
                     margin="normal"
                     variant="outlined"
@@ -524,11 +507,11 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="job_title"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
                    <NumberFormat
+                   required
                       customInput={TextField}
                       size="small"
                       margin="normal"
@@ -537,7 +520,7 @@ const User = () => {
                       label="Bar #"
                       onChange={(e) => onChange(e)}
                       id="bar_no"
-                      autoComplete="new-password"
+
                       format="######"
                       type="tel"
                     />
@@ -548,8 +531,7 @@ const User = () => {
                 <Typography mt={2} component="h3" color="primary" variant="h5">
                   Contact Info
                 </Typography>
-              </Box>
-
+              </Box>Admin
               <Grid
                 container
                 spacing={2}
@@ -567,7 +549,6 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="street"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
@@ -580,7 +561,6 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="suite"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
@@ -593,7 +573,6 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="city"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
@@ -606,7 +585,6 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="state"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
@@ -621,7 +599,7 @@ const User = () => {
                       type="tel"
                       onChange={(e) => onChange(e)}
                       id="zip"
-                      autoComplete="new-password"
+
                     />
                 </Grid>
                 <Grid item lg={3}> 
@@ -636,7 +614,7 @@ const User = () => {
                       type="tel"
                       onChange={(e) => onChange(e)}
                       id="ext"
-                      autoComplete="new-password"
+
                     />
                 </Grid>
                 <Grid item lg={3}>
@@ -649,7 +627,6 @@ const User = () => {
                     type="email"
                     onChange={(e) => onChange(e)}
                     id="p_email"
-                    autoComplete="new-password"
                   />
                 </Grid>
                 <Grid item lg={3}>
@@ -672,7 +649,7 @@ const User = () => {
                       type="phone"
                       onChange={(e) => onChange(e)}
                       id="mobile"
-                      autoComplete="new-password"
+
                     />
                 </Grid>
                 <Grid item lg={3}>
@@ -687,7 +664,7 @@ const User = () => {
                       type="phone"
                       onChange={(e) => onChange(e)}
                       id="home"
-                      autoComplete="new-password"
+
                     />
                 </Grid>
                 <Grid item lg={3}>
@@ -702,7 +679,7 @@ const User = () => {
                       type="phone"
                       onChange={(e) => onChange(e)}
                       id="work"
-                      autoComplete="new-password"
+
                     />
                 </Grid>
                 <Grid item lg={3}>
@@ -718,7 +695,6 @@ const User = () => {
                     type="text"
                     onChange={(e) => onChange(e)}
                     id="phone_ext"
-                    autoComplete="new-password"
                     />
                 </Grid>
               </Grid>

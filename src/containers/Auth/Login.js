@@ -12,7 +12,9 @@ import {
 	Box,
 	Typography,
 	TextField,
+	Alert,
 } from "@mui/material";
+
 import AlertMassage from "../../components/Alerts/Alerts";
 import { useSelector, useDispatch } from "react-redux";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -36,15 +38,14 @@ const Login = () => {
 
 	const { username, email, password } = formData;
 
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (isError) {
-			toast.error(message);
-		}
-
+		
 		if (isAuthenticated) {
 			return <Redirect to='/' />;
+		
 		}
 	}, [user, isError, isSuccess, message, dispatch]);
 
@@ -91,7 +92,9 @@ const Login = () => {
 					backgroundPosition: "center",
 				}}
 			/>
-
+			
+			
+			
 			<Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
 				<Box
 					sx={{
@@ -101,6 +104,7 @@ const Login = () => {
 						flexDirection: "column",
 						alignItems: "center",
 					}}>
+						{isError ? <Alert severity="warning"> {message}</Alert>: null}
 					<Avatar sx={{ m: 1, bgcolor: "warning.main" }}>
 						<LockOutlinedIcon />
 					</Avatar>
@@ -109,6 +113,7 @@ const Login = () => {
 					</Typography>
 					<Box
 						component='form'
+						autoComplete="off"
 						Validate
 						sx={{ mt: 1 }}
 						onSubmit={(e) => onSubmit(e)}>
@@ -123,7 +128,6 @@ const Login = () => {
 							name='username'
 							value={username}
 							onChange={(e) => onChange(e)}
-							autoComplete='new-password'
 							autoFocus
 						/>
 						<TextField
@@ -136,7 +140,6 @@ const Login = () => {
 							name='email'
 							value={email}
 							onChange={(e) => onChange(e)}
-							autoComplete='new-password'
 						/>
 						<TextField
 							margin='normal'

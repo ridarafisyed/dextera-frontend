@@ -1,31 +1,19 @@
 /** @format */
 
 import React, { useState, useEffect, Fragment } from "react";
+import { useSelector } from "react-redux";
 
-import { connect } from "react-redux";
-import {
-  Button,
-  Box,
-  Paper,
-  Link,
-  Grid,
-  Container,
-  Stack,
-} from "@mui/material";
+import { Box, Paper, Stack,} from "@mui/material";
 
-import { KeyboardArrowDown } from "@mui/icons-material";
-
-import { useToggle } from "../../context/useToggle";
 import AdminSidebar from "./AdminSidebar";
 import LawyerSidebar from "./LawyerSidebar";
 import FirmSidebar from "./FirmSidebar";
 import CustomerSidebar from "./CutomerSidebar";
 import "./style.css";
-import TestingSidebar from "./TestingSidebar";
 
-const Sidebar = ({ user }) => {
-  const [controlToggle, setControlToggle] = useToggle(true);
+const Sidebar = () => {
 
+  const { user } = useSelector((state) => state.auth.user);
   const [localuser, setLocalUser] = useState({
     username: "Admin",
     is_firm: false,
@@ -57,7 +45,7 @@ const Sidebar = ({ user }) => {
     }
   };
 
-  // const [state, dispatch] = useContext(UserContext);
+
   return (
     <Fragment>
       <Paper component={Stack} elevation={3} spacing={1}>
@@ -67,33 +55,12 @@ const Sidebar = ({ user }) => {
             overflowY: "scroll",
           }}
         >
-          {/* {SidebarRedirect()} */}
-          <TestingSidebar />
+          {SidebarRedirect()}
+
         </Box>
-        {/* <Box p={2}>
-          <Button
-            variant="contained"
-            fullWidth
-            color="error"
-            style={{
-              padding: "1rem",
-              "&:hover": {
-                color: "#fff",
-              },
-            }}
-          >
-            Report
-          </Button>
-        </Box> */}
       </Paper>
     </Fragment>
   );
 };
-const mapStateToProps = (state) => ({
-  // isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user,
-});
 
-export default connect(mapStateToProps)(Sidebar);
-
-// export default Sidebar;
+export default Sidebar;

@@ -27,6 +27,7 @@ import {
 	Paper,
 } from "@mui/material";
 import RectangleIcon from "@mui/icons-material/Rectangle";
+import RoleFunctions from "./RoleFuncions";
 import ClearIcon from "@mui/icons-material/Clear";
 import { ActionAlerts } from "../../utils/ActionAlerts";
 
@@ -35,21 +36,13 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	getPermissions,
 	reset,
-	updateIsView,
-	updateIsEdit,
-	updateIsCreate,
-	updateIsDelete,
-	updateIsContacts,
-	updateIsTeam,
-	updateIsOffice,
-	updateIsRegion,
-	updateIsAll,
+
 } from "../../redux/features/permissionSlice";
 import { useToggle } from "../../context/useToggle";
 
 const ManageRole = () => {
 	const dispatch = useDispatch();
-	const [allValue, setAllValue] = useToggle(false);
+
 
 	const { user } = useSelector((state) => state.auth);
 	const { updateData, setUpdateData } = useState([]);
@@ -116,11 +109,11 @@ const ManageRole = () => {
 		setRole(id);
 		dispatch(getPermissions(id));
 	};
+	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const body = JSON.stringify({ name });
 		axios
-
 			.post(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, body, CONFIG)
 			.then((res) => {
 				FetchData();
@@ -139,57 +132,6 @@ const ManageRole = () => {
 				);
 			});
 	};
-	const onClickChange = (id, value, position, permission) => {
-		const buttons = [
-			permission.is_view,
-			permission.is_edit,
-			permission.is_create,
-			permission.is_delete,
-			permission.is_contacts,
-			permission.is_team,
-			permission.is_office,
-			permission.is_region,
-		];
-		buttons[position] = value === 1 ? true : false;
-		const is_view = buttons[0];
-		const is_edit = buttons[1];
-		const is_create = buttons[2];
-		const is_delete = buttons[3];
-		const is_contacts = buttons[4];
-		const is_team = buttons[5];
-		const is_office = buttons[6];
-		const is_region = buttons[7];
-		const body = JSON.stringify({
-			is_view,
-			is_edit,
-			is_create,
-			is_delete,
-			is_contacts,
-			is_team,
-			is_office,
-			is_region,
-		});
-		axios
-			.put(
-				`${process.env.REACT_APP_API_URL}/user/auth/permissions/${id}/`,
-				body,
-				CONFIG,
-			)
-			.then((res) => {
-				dispatch(getPermissions(id));
-			})
-			.catch((err) => {});
-	};
-	const clickAllValue = (id) => {
-		setAllValue(allValue);
-		dispatch(
-			updateIsAll({
-				id: id,
-				value: allValue,
-			}),
-		);
-	};
-
 	return (
 		<Fragment>
 			<Grid container spacing={2}>
@@ -322,331 +264,7 @@ const ManageRole = () => {
 							<TableBody>
 								{role !== null && permissions.permissions.length > 0 ? (
 									permissions.permissions.map((permission, index) => (
-										<TableRow>
-											<TableCell>{permission.name}</TableCell>
-											<TableCell>
-												<Button
-													onClick={(e) => {
-														dispatch(updateIsView(permission.id));
-													}}
-													sx={
-														permission.is_view
-															? {
-																	"color": "#4BB543",
-																	"backgroundColor": "#4BB543",
-																	"&:hover": {
-																		backgroundColor: "#4BB545",
-																		color: "#4BB545",
-																	},
-															  }
-															: {
-																	"color": "#D3D3D3",
-																	"backgroundColor": "#D3D3D3",
-																	"&:hover": {
-																		backgroundColor: "#D3D3D3",
-																		color: "#D3D3D3",
-																	},
-															  }
-													}
-													size='large'
-													aria-label='toggle'>
-													<RectangleIcon />
-												</Button>
-											</TableCell>
-											<TableCell>
-												<Button
-													onClick={(e) => {
-														dispatch(updateIsEdit(permission.id));
-													}}
-													sx={
-														permission.is_edit
-															? {
-																	"color": "#4BB543",
-																	"backgroundColor": "#4BB543",
-																	"&:hover": {
-																		backgroundColor: "#4BB545",
-																		color: "#4BB545",
-																	},
-															  }
-															: {
-																	"color": "#D3D3D3",
-																	"backgroundColor": "#D3D3D3",
-																	"&:hover": {
-																		backgroundColor: "#D3D3D3",
-																		color: "#D3D3D3",
-																	},
-															  }
-													}
-													size='large'
-													aria-label='toggle'>
-													<RectangleIcon />
-												</Button>
-											</TableCell>
-											<TableCell>
-												<Button
-													onClick={(e) => {
-														dispatch(updateIsCreate(permission.id));
-													}}
-													sx={
-														permission.is_create
-															? {
-																	"color": "#4BB543",
-																	"backgroundColor": "#4BB543",
-																	"&:hover": {
-																		backgroundColor: "#4BB545",
-																		color: "#4BB545",
-																	},
-															  }
-															: {
-																	"color": "#D3D3D3",
-																	"backgroundColor": "#D3D3D3",
-																	"&:hover": {
-																		backgroundColor: "#D3D3D3",
-																		color: "#D3D3D3",
-																	},
-															  }
-													}
-													size='large'
-													aria-label='toggle'>
-													<RectangleIcon />
-												</Button>
-											</TableCell>
-											<TableCell>
-												<Button
-													onClick={(e) => {
-														dispatch(updateIsDelete(permission.id));
-													}}
-													sx={
-														permission.is_delete
-															? {
-																	"color": "#4BB543",
-																	"backgroundColor": "#4BB543",
-																	"&:hover": {
-																		backgroundColor: "#4BB545",
-																		color: "#4BB545",
-																	},
-															  }
-															: {
-																	"color": "#D3D3D3",
-																	"backgroundColor": "#D3D3D3",
-																	"&:hover": {
-																		backgroundColor: "#D3D3D3",
-																		color: "#D3D3D3",
-																	},
-															  }
-													}
-													size='large'
-													aria-label='toggle'>
-													<RectangleIcon />
-												</Button>
-											</TableCell>
-
-											{permission.name === "Contact" ? (
-												<>
-													<TableCell>
-														<Button
-															onClick={(e) => {
-																dispatch(updateIsContacts(permission.id));
-															}}
-															sx={
-																permission.is_contacts
-																	? {
-																			"color": "#4BB543",
-																			"backgroundColor": "#4BB543",
-																			"&:hover": {
-																				backgroundColor: "#4BB545",
-																				color: "#4BB545",
-																			},
-																	  }
-																	: {
-																			"color": "#D3D3D3",
-																			"backgroundColor": "#D3D3D3",
-																			"&:hover": {
-																				backgroundColor: "#D3D3D3",
-																				color: "#D3D3D3",
-																			},
-																	  }
-															}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															onClick={(e) => {
-																dispatch(updateIsTeam(permission.id));
-															}}
-															sx={
-																permission.is_team
-																	? {
-																			"color": "#4BB543",
-																			"backgroundColor": "#4BB543",
-																			"&:hover": {
-																				backgroundColor: "#4BB545",
-																				color: "#4BB545",
-																			},
-																	  }
-																	: {
-																			"color": "#D3D3D3",
-																			"backgroundColor": "#D3D3D3",
-																			"&:hover": {
-																				backgroundColor: "#D3D3D3",
-																				color: "#D3D3D3",
-																			},
-																	  }
-															}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															onClick={(e) => {
-																dispatch(updateIsOffice(permission.id));
-															}}
-															sx={
-																permission.is_office
-																	? {
-																			"color": "#4BB543",
-																			"backgroundColor": "#4BB543",
-																			"&:hover": {
-																				backgroundColor: "#4BB545",
-																				color: "#4BB545",
-																			},
-																	  }
-																	: {
-																			"color": "#D3D3D3",
-																			"backgroundColor": "#D3D3D3",
-																			"&:hover": {
-																				backgroundColor: "#D3D3D3",
-																				color: "#D3D3D3",
-																			},
-																	  }
-															}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															onClick={(e) => {
-																dispatch(updateIsRegion(permission.id));
-															}}
-															sx={
-																permission.is_region
-																	? {
-																			"color": "#4BB543",
-																			"backgroundColor": "#4BB543",
-																			"&:hover": {
-																				backgroundColor: "#4BB545",
-																				color: "#4BB545",
-																			},
-																	  }
-																	: {
-																			"color": "#D3D3D3",
-																			"backgroundColor": "#D3D3D3",
-																			"&:hover": {
-																				backgroundColor: "#D3D3D3",
-																				color: "#D3D3D3",
-																			},
-																	  }
-															}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															onClick={() => clickAllValue(permission.id)}
-															sx={
-																allValue
-																	? {
-																			"color": "#4BB543",
-																			"backgroundColor": "#4BB543",
-																			"&:hover": {
-																				backgroundColor: "#4BB545",
-																				color: "#4BB545",
-																			},
-																	  }
-																	: {
-																			"color": "#D3D3D3",
-																			"backgroundColor": "#D3D3D3",
-																			"&:hover": {
-																				backgroundColor: "#D3D3D3",
-																				color: "#D3D3D3",
-																			},
-																	  }
-															}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-												</>
-											) : (
-												<>
-													<TableCell>
-														<Button
-															sx={{
-																color: "#eee",
-																backgroundColor: "#eee",
-															}}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															sx={{
-																color: "#eee",
-																backgroundColor: "#eee",
-															}}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															sx={{
-																color: "#eee",
-																backgroundColor: "#eee",
-															}}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															sx={{
-																color: "#eee",
-																backgroundColor: "#eee",
-															}}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-													<TableCell>
-														<Button
-															sx={{
-																color: "#eee",
-																backgroundColor: "#eee",
-															}}
-															size='large'
-															aria-label='toggle'>
-															<RectangleIcon />
-														</Button>
-													</TableCell>
-												</>
-											)}
-										</TableRow>
+										<RoleFunctions key={permission.id} permission={permission}/>
 									))
 								) : (
 									<>please selete a role</>

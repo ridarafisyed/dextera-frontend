@@ -1,31 +1,54 @@
 /** @format */
 
-import React, { Fragment } from "react";
-import { Grid, Button, Box } from "@mui/material";
+import React, { useState, Fragment } from "react";
+import {
+  Box,
+  Accordion,
+  AccordionSummary,
+  Typography,
+  AccordionDetails,
+  Grid,
+} from "@mui/material";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Task,
   MoneyOff,
   FileCopy,
   Receipt,
   AssignmentTurnedIn,
+  Mail,
+  Phone,
+  Group,
   AddCircle,
   Work,
   Person,
 } from "@mui/icons-material";
 
-import { useToggle } from "../../context/useToggle";
-
 import { SideBarBtn } from "../../styles/styles";
 import { Link } from "react-router-dom";
-import { KeyboardArrowDown } from "@mui/icons-material";
-// import { UserContext } from '../../context/User';
+import { useSelector, useDispatch } from "react-redux";
+import {
+  revenueInActive,
+  revenueOutActive,
+  newCustomerActive,
+  lostCustomerActive,
+  newAccountActive,
+  marketingActive,
+  appointmentActive,
+  empOversiteActive,
+  emailsActive,
+  mapActive,
+  callsActive,
+} from "../../redux/features/sidebarSlice";
+
 import "./style.css";
 
 const Controls = () => {
   return (
     <Fragment>
-      <Box px={3}>
+      <Box px={3} sx={{ color: "#796ef0" }}>
         <SideBarBtn variant="outlined">
           <Grid>
             <Box component={Link} to="/">
@@ -101,7 +124,7 @@ const Controls = () => {
           <Grid>
             <Box component={Link} to="/contact">
               <Grid item>
-                <AssignmentTurnedIn fontSize="medium" />
+                <Person fontSize="medium" />
               </Grid>
               <Grid item>Contact</Grid>
             </Box>
@@ -111,65 +134,35 @@ const Controls = () => {
     </Fragment>
   );
 };
-const EmployeeOversite = () => {
-  return (
-    <Fragment>
-      <Box px={3}>
-        <SideBarBtn variant="outlined">
-          <Grid>
-            <Box component={Link} to="/users">
-              <Grid item>
-                <Person fontSize="medium" />
-              </Grid>
-              <Grid item>EmployeeOversite</Grid>
-            </Box>
-          </Grid>
-        </SideBarBtn>
-        <SideBarBtn variant="outlined">
-          <Grid>
-            <Box component={Link} to="/user-roles">
-              <Grid item>
-                <AssignmentTurnedIn fontSize="medium" />
-              </Grid>
-              <Grid item>Calls</Grid>
-            </Box>
-          </Grid>
-        </SideBarBtn>
-        <SideBarBtn variant="outlined">
-          <Grid>
-            <Box component={Link} to="/user-roles">
-              <Grid item>
-                <AssignmentTurnedIn fontSize="medium" />
-              </Grid>
-              <Grid item>Emails</Grid>
-            </Box>
-          </Grid>
-        </SideBarBtn>
-      </Box>
-    </Fragment>
-  );
-};
+
 const Marketing = () => {
+  const sidebar = useSelector((state) => state.sidebar);
+  const dispatch = useDispatch();
   return (
     <Fragment>
       <Box px={3}>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(marketingActive())}
+        >
           <Grid>
-            <Box component={Link} to="/users">
-              <Grid item>
-                <Person fontSize="medium" />
-              </Grid>
-              <Grid item>Email</Grid>
-            </Box>
-          </Grid>
-        </SideBarBtn>
-        <SideBarBtn variant="outlined">
-          <Grid>
-            <Box component={Link} to="/user-roles">
+            <Box
+              sx={sidebar.marketing ? { color: "#ddd" } : { color: "#796ef0" }}
+            >
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
               <Grid item>Marketing</Grid>
+            </Box>
+          </Grid>
+        </SideBarBtn>
+        <SideBarBtn variant="outlined" onClick={() => dispatch(emailsActive())}>
+          <Grid>
+            <Box sx={sidebar.emails ? { color: "#ddd" } : { color: "#796ef0" }}>
+              <Grid item>
+                <Mail fontSize="medium" />
+              </Grid>
+              <Grid item>Email</Grid>
             </Box>
           </Grid>
         </SideBarBtn>
@@ -179,12 +172,17 @@ const Marketing = () => {
 };
 
 const HumanResources = () => {
+  const sidebar = useSelector((state) => state.sidebar);
+  const dispatch = useDispatch();
   return (
     <Fragment>
       <Box px={3}>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          // onClick={() => dispatch(manageUserActive())}
+        >
           <Grid>
-            <Box component={Link} to="/users">
+            <Box sx={{ color: "#796ef0" }} component={Link} to="/users">
               <Grid item>
                 <Person fontSize="medium" />
               </Grid>
@@ -192,9 +190,12 @@ const HumanResources = () => {
             </Box>
           </Grid>
         </SideBarBtn>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          // onClick={() => dispatch(manageRoleActive())}
+        >
           <Grid>
-            <Box component={Link} to="/user-roles">
+            <Box sx={{ color: "#796ef0" }} component={Link} to="/user-roles">
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -202,11 +203,14 @@ const HumanResources = () => {
             </Box>
           </Grid>
         </SideBarBtn>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          // onClick={() => dispatch(manageGroupActive())}
+        >
           <Grid>
-            <Box component={Link} to="/user-groups">
+            <Box sx={{ color: "#796ef0" }} component={Link} to="/user-groups">
               <Grid item>
-                <AssignmentTurnedIn fontSize="medium" />
+                <Group fontSize="medium" />
               </Grid>
               <Grid item>Manage Group</Grid>
             </Box>
@@ -218,12 +222,19 @@ const HumanResources = () => {
 };
 
 const RevenueControls = () => {
+  const sidebar = useSelector((state) => state.sidebar);
+  const dispatch = useDispatch();
   return (
     <Fragment>
       <Box px={3}>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(revenueInActive())}
+        >
           <Grid>
-            <Box component={Link} to="/">
+            <Box
+              sx={sidebar.revenueIn ? { color: "#ddd" } : { color: "#796ef0" }}
+            >
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -231,9 +242,14 @@ const RevenueControls = () => {
             </Box>
           </Grid>
         </SideBarBtn>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(revenueOutActive())}
+        >
           <Grid>
-            <Box component={Link} to="/">
+            <Box
+              sx={sidebar.revenueOut ? { color: "#ddd" } : { color: "#796ef0" }}
+            >
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -247,12 +263,21 @@ const RevenueControls = () => {
 };
 
 const AccountControls = () => {
+  const sidebar = useSelector((state) => state.sidebar);
+  const dispatch = useDispatch();
   return (
     <Fragment>
       <Box px={3}>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(newCustomerActive())}
+        >
           <Grid>
-            <Box component={Link} to="/">
+            <Box
+              sx={
+                sidebar.newCustomer ? { color: "#ddd" } : { color: "#796ef0" }
+              }
+            >
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -260,9 +285,16 @@ const AccountControls = () => {
             </Box>
           </Grid>
         </SideBarBtn>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(lostCustomerActive())}
+        >
           <Grid>
-            <Box component={Link} to="/">
+            <Box
+              sx={
+                sidebar.lostCustomer ? { color: "#ddd" } : { color: "#796ef0" }
+              }
+            >
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -270,9 +302,14 @@ const AccountControls = () => {
             </Box>
           </Grid>
         </SideBarBtn>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(newAccountActive())}
+        >
           <Grid>
-            <Box component={Link} to="/">
+            <Box
+              sx={sidebar.newAccount ? { color: "#ddd" } : { color: "#796ef0" }}
+            >
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -280,9 +317,9 @@ const AccountControls = () => {
             </Box>
           </Grid>
         </SideBarBtn>
-        <SideBarBtn variant="outlined">
+        <SideBarBtn variant="outlined" onClick={() => dispatch(mapActive())}>
           <Grid>
-            <Box component={Link} to="/">
+            <Box sx={sidebar.map ? { color: "#ddd" } : { color: "#796ef0" }}>
               <Grid item>
                 <AssignmentTurnedIn fontSize="medium" />
               </Grid>
@@ -294,93 +331,161 @@ const AccountControls = () => {
     </Fragment>
   );
 };
-
-const AdminSidebar = () => {
-  const [controlToggle, setControlToggle] = useToggle(false);
-  const [revenueToggle, setRevenueToggle] = useToggle(false);
-  const [customerToggle, setCustomerToggle] = useToggle(false);
-  const [marketingToggle, setMarketingToggle] = useToggle(false);
-  const [empOversiteToggle, setEmpOversiteToggle] = useToggle(false);
-  const [hrToggle, setHrToggle] = useToggle(false);
-
+const EmployeeOversite = () => {
+  const sidebar = useSelector((state) => state.sidebar);
+  const dispatch = useDispatch();
   return (
     <Fragment>
-      <Button
-        variant="text"
-        fullWidth
-        endIcon={<KeyboardArrowDown />}
-        sx={{
-          textTransform: "none",
-          marginTop: "3rem",
-        }}
-        onClick={() => setControlToggle(controlToggle)}
-      >
-        Controls
-      </Button>
-      {empOversiteToggle ? EmployeeOversite() : null}
-      <Button
-        variant="text"
-        fullWidth
-        endIcon={<KeyboardArrowDown />}
-        sx={{
-          textTransform: "none",
-          marginTop: "3rem",
-        }}
-        onClick={() => setEmpOversiteToggle(empOversiteToggle)}
-      >
-        Controls
-      </Button>
-      {controlToggle ? Controls() : null}
-      <Button
-        variant="text"
-        fullWidth
-        endIcon={<KeyboardArrowDown />}
-        sx={{
-          textTransform: "none",
-        }}
-        onClick={() => setHrToggle(hrToggle)}
-      >
-        Human Resources
-      </Button>
-      {hrToggle ? HumanResources() : null}
-      <Button
-        variant="text"
-        fullWidth
-        endIcon={<KeyboardArrowDown />}
-        sx={{
-          textTransform: "none",
-        }}
-        onClick={() => setRevenueToggle(revenueToggle)}
-      >
-        Revenue
-      </Button>
-      {revenueToggle ? RevenueControls() : null}
-      <Button
-        variant="text"
-        fullWidth
-        endIcon={<KeyboardArrowDown />}
-        sx={{
-          textTransform: "none",
-        }}
-        onClick={() => setCustomerToggle(customerToggle)}
-      >
-        Customers
-      </Button>
-      {customerToggle ? AccountControls() : null}
-      <Button
-        variant="text"
-        fullWidth
-        endIcon={<KeyboardArrowDown />}
-        sx={{
-          textTransform: "none",
-        }}
-        onClick={() => setMarketingToggle(marketingToggle)}
-      >
-        Marketing
-      </Button>
-      {marketingToggle ? Marketing() : null}
+      <Box px={3}>
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(empOversiteActive())}
+        >
+          <Grid>
+            <Box
+              sx={
+                sidebar.empOversite ? { color: "#ddd" } : { color: "#796ef0" }
+              }
+            >
+              <Grid item>
+                <Group fontSize="medium" />
+              </Grid>
+              <Grid item>Employee Oversite</Grid>
+            </Box>
+          </Grid>
+        </SideBarBtn>
+        <SideBarBtn variant="outlined" onClick={() => dispatch(callsActive())}>
+          <Grid>
+            <Box sx={sidebar.calls ? { color: "#ddd" } : { color: "#796ef0" }}>
+              <Grid item>
+                <Phone fontSize="medium" />
+              </Grid>
+              <Grid item>Calls</Grid>
+            </Box>
+          </Grid>
+        </SideBarBtn>
+        <SideBarBtn
+          variant="outlined"
+          onClick={() => dispatch(appointmentActive())}
+        >
+          <Grid>
+            <Box
+              sx={
+                sidebar.appointment ? { color: "#ddd" } : { color: "#796ef0" }
+              }
+            >
+              <Grid item>
+                <Mail fontSize="medium" />
+              </Grid>
+              <Grid item>Appointments</Grid>
+            </Box>
+          </Grid>
+        </SideBarBtn>
+      </Box>
     </Fragment>
   );
 };
 
-export default AdminSidebar;
+export const accordionData = [
+  {
+    name: "Controls",
+    id: "controls",
+    tiles: <Controls />,
+  },
+
+  {
+    name: "Human Resources",
+    id: "human_resource",
+    tiles: <HumanResources />,
+  },
+  {
+    name: "Revenue",
+    id: "revenue",
+    tiles: <RevenueControls />,
+  },
+  {
+    name: "Customers",
+    id: "customers",
+    tiles: <AccountControls />,
+  },
+  {
+    name: "Marketing",
+    id: "marketing",
+    tiles: <Marketing />,
+  },
+  {
+    name: "Employee Oversite",
+    id: "empOversite",
+    tiles: <EmployeeOversite />,
+  },
+];
+
+const TestingSidebar = () => {
+  const sidebar = useSelector((state) => state.sidebar);
+
+  const [accordions, updateAccordions] = useState(accordionData);
+
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(accordions);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    updateAccordions(items);
+  }
+
+  return (
+    <Fragment>
+      <Box mt={5}>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="accordions">
+            {(provided) => (
+              <Box
+                className="accordions"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {accordions.map((item, index) => {
+                  return (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <Accordion
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon color="primary" />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                          >
+                            <Typography
+                              align="center"
+                              color="primary"
+                              sx={{ textTransform: "uppercase" }}
+                            >
+                              {item.name}
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>{item.tiles}</AccordionDetails>
+                        </Accordion>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </Box>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Box>
+    </Fragment>
+  );
+};
+
+export default TestingSidebar;
