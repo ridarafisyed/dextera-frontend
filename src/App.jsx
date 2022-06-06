@@ -64,6 +64,7 @@ import Contact from "./components/Contact/Contact";
 import UserRole from "./components/User/UserRole";
 import ManageRole from "./components/User/ManageRole";
 import ManageUserGroup from "./components/User/ManageUserGroup";
+import "./styles/main.css"
 
 const App = () => {
   const alertOptions = {

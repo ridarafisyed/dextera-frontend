@@ -1,233 +1,74 @@
 /** @format */
 
 import React, { Fragment, useState, useEffect } from "react";
-import {
-  Table,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableBody,
-  Switch,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-  TextField,
-  Box,
-  Grid,
-  MenuItem,
-  Typography,
-  Divider,
-  FormControlLabel,
-  Stack,
-} from "@mui/material";
+import Table from "@mui/material/Table"
+import TableCell from "@mui/material/TableCell"
+import TableContainer from "@mui/material/TableContainer"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import TableBody from "@mui/material/TableBody"
+import Switch from "@mui/material/Switch"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import Stack from "@mui/material/Stack"
 import axios from "axios";
-
-import { ActionAlerts } from "../../utils/ActionAlerts";
 import { CONFIG } from "../../api/MatterApi";
-import NumberFormat from 'react-number-format';
 import CreateUser from "./CreateUser";
 import {
   Search,
   SearchIconWrapper,
   StyledInputBase,
 } from "../../styles/styles";
-import ClearIcon from "@mui/icons-material/Clear";
+
 import SearchIcon from "@mui/icons-material/Search";
 import { useToggle } from "../../context/useToggle";
+import{ useDispatch} from "react-redux"
+import UpdateUser from "./UpdateUser";
 
 const User = () => {
   const [usersData, setUsersData] = useState([]);
-
+  const [userId, setUserId] = useState(null)
   const [isActive, setIsActive] = useToggle(false);
   const [searchItem, setSearchItem] = useState("")
 
-  const [roles, setRoles] = useState([]);
-  const [role, setRole] = useState("");
-  const [group, setGroup] = useState("");
-  const [groups, setGroups] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
   const [rateType, setRateType] = useState("");
 
+  const dispatch = useDispatch()
+  
   const handleChange = (event) => {
     setRateType(event.target.value);
   };
-
-  const [approvel, setApprovel] = useToggle(false);
-
-  const [userData, setUserData] = useState({
-    f_name: "",
-    m_name: "",
-    l_name: "",
-    c_email: "",
-    rate_type: "",
-    rate: " ",
-    time_zone: "",
-    job_title: "",
-    bar_no: " ",
-    street: "",
-    suite: "",
-    city: "",
-    state: "",
-    zip: "",
-    ext: "",
-    mobile: "",
-    home: "",
-    work_no: "",
-    p_email: "",
-    phone_ext: "",
-  });
-
-  const {
-    f_name,
-    m_name,
-    l_name,
-    c_email,
-    rate,
-    time_zone,
-    job_title,
-    bar_no,
-    street,
-    suite,
-    city,
-    state,
-    zip,
-    ext,
-    mobile,
-    home,
-    work_no,
-    p_email,
-    phone_ext,
-  } = userData;
-  const onChange = (e) =>
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const first_name = f_name;
-    const last_name = l_name;
-    const username = f_name.toLowerCase() + l_name.toLowerCase()
-    const password = username
-    const email = c_email
-    const body1 = JSON.stringify({username, first_name, last_name, email, password})
-    const body2 = JSON.stringify({
-      f_name,
-      m_name,
-      l_name,
-      p_email,
-      role,
-      c_email,
-      rate,
-      time_zone,
-      group,
-      job_title,
-      bar_no,
-      street,
-      suite,
-      city,
-      state,
-      zip,
-      ext,
-      mobile,
-      home,
-      work_no,
-      phone_ext,
-    });
-    const axiosReguest1 = axios.post(`${process.env.REACT_APP_API_URL}/user/auth/register-firm-employee/`,body1, CONFIG)
-    const axiosReguest2 = axios.post(`${process.env.REACT_APP_API_URL}/api/create-member/`, body2, CONFIG)
-      axios.all(axiosReguest1, axiosReguest2)   
-      .then((res) => {
-        FetchData();
-        return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
-        );
-      })
-      .catch((err) => {
-        FetchData();
-        return (
-          <ActionAlerts
-            value={{ status: err.statusText, message: "Success" }}
-          />
-        );
-      });
-  };
-  const handleDelete = (id) => {
-    axios
-      .delete(
-        `${process.env.REACT_APP_API_URL}/api/create-member/${id}/`,
-        CONFIG,
-      )
-      .then((res) => {
-        FetchData();
-        return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
-        );
-      });
-  };
-  const handleDeactivate = (id) => {
-    axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/user/auth/is-active-user/${id}/`, false,
-        CONFIG,
-      )
-      .then((res) => {
-        FetchData();
-        return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
-        );
-      });
-  };
+  
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (data) => {
     setOpen(true);
   };
-
+ const handleClickOpen2 = (data) => {
+    setUserId(data)
+    setOpen2(true);
+  };
   const handleClose = () => {
     setOpen(false);
   };
-  const FetchRoleData = () => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
-      .then((res) => {
-        // console.log(res.data);
-        setLoading(false);
-        setStatus(res.statusText);
-        setRoles(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-        setError(err.message);
-      });
-  };
-  const FetchGroupData = () => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/user/auth/groups/`, CONFIG)
-      .then((res) => {
-        setLoading2(false);
-        console.log(res.data)
-        setGroups(res.data);
-      })
-      .catch((err) => {
-        setLoading2(false);
-      });
+ const handleClose2 = () => {
+    setOpen2(false);
   };
 
   const FetchData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user/auth/users-list/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/api/create-member/`, CONFIG)
       .then((res) => {
         setLoading(false);
         setStatus(res.statusText);
@@ -239,10 +80,10 @@ const User = () => {
       });
   };
   useEffect(() => {
-    FetchRoleData();
     FetchData();
-    FetchGroupData();
   }, []);
+
+  
   const showUsers = () => {
     if (usersData.length === 0) {
       return <p>No data found...</p>;
@@ -257,34 +98,34 @@ const User = () => {
         }
 
       }).map((data) => {if(isActive){
-        return data.is_active ? (<TableRow>
+        return data.is_active === "True"? (<TableRow>
           <TableCell>{data.first_name}</TableCell>
           <TableCell>{data.last_name}</TableCell>
-          <TableCell>{data.email}</TableCell>
+          <TableCell>{data.c_email}</TableCell>
           <TableCell>{data.role}</TableCell>
           <TableCell>{data.group}</TableCell>
           <TableCell>{data.last_login}</TableCell>
-          <TableCell>{data.is_active ? "active":"inactive"}</TableCell>
-
+          <TableCell>{data.is_active === "True" ? "active":"inactive"}</TableCell>
+          <TableCell><Button onClick={()=>handleClickOpen2(data)}>View {data.id}</Button></TableCell>
           <TableCell></TableCell>
         </TableRow>) : null
       }
     else return <TableRow>
-          <TableCell>{data.first_name}</TableCell>
+          <TableCell> {data.first_name}</TableCell>
           <TableCell>{data.last_name}</TableCell>
-          <TableCell>{data.email}</TableCell>
+          <TableCell>{data.c_email}</TableCell>
           <TableCell>{data.role}</TableCell>
           <TableCell>{data.group}</TableCell>
           <TableCell>{data.last_login}</TableCell>
-          <TableCell>{data.is_active ? "active":"inactive"}</TableCell>
-
+          <TableCell>{data.is_active === "True" ? "active":"inactive"}</TableCell>
+          <TableCell><Button onClick={()=>handleClickOpen2(data)}>View{data.id}</Button></TableCell>
           <TableCell></TableCell>
         </TableRow>});
   };
 
   return (
     <Fragment>
-      <Box>
+      <Box mb={7} >
         <Typography component="h4" variant="h5" color="primary" mb={2}>
           Manage Users
         </Typography>
@@ -301,17 +142,14 @@ const User = () => {
           </Search>
           <Button
             color="success"
-            onClick={handleClickOpen}
+            onClick={()=>handleClickOpen()}
             variant="contained"
             sx={{ color: "white", background: "#28c570" }}
           >
             + Add User
           </Button>
           <Dialog
-            component="form"
-            autoComplete="off"
-            Validate
-            onSubmit={(e) => handleSubmit(e)}
+           
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
@@ -321,412 +159,27 @@ const User = () => {
           >
             <DialogTitle id="alert-dialog-title">{"Add New User"}</DialogTitle>
             <DialogContent>
-              <Grid
-                container
-                spacing={2}
-                mt={2}
-                sx={{
-                  "& .MuiTextField-root": { m: 1, width: "14rem", "input::-webkit-outer-spin-button": {
-                    webkitAappearance: "none"
-                  },  },
-                }}
-
-              >
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="f_name"
-                    label="First Name"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="f_name"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="m_name"
-                    label="Middle Name"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="m_name"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="l_name"
-                    label="Last Name"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="l_name"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="c_email"
-                    label="Company Email"
-                    type="email"
-                    onChange={(e) => onChange(e)}
-                    id="c_email"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-              
-                  <NumberFormat
-                      required
-                      id="rate"
-                      customInput={TextField}
-                      size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="rate"
-                      label="Rate $"
-                      onChange={(e) => onChange(e)}
-                      format="####.##"
-                      type="tel"
-                      thousandSeparator={true}
-                    />
-                </Grid>
-                <Grid item lg={6}>
-                  <Stack direction="row" spacing={2} ml={2}>
-                    <FormControlLabel
-                      sx={{ fontSize: "2rem" }}
-                      label=""
-                      control={
-                        <Switch
-                          checked={approvel}
-                          onChange={() => setApprovel(approvel)}
-                        />
-                      }
-                    />
-                    <Typography>
-                      Round Entries (Round [up/down] to nearnest
-                      <TextField
-                        margin="dense"
-                        variant="standard"
-                        type="text"
-                        size="small"
-                        placeholder="0.00"
-                        sx={{
-                          maxWidth: "5rem",
-                        }}
-                      />
-                      fraction of the hour
-                    </Typography>
-                  </Stack>
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    select
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="role"
-                    label="Role"
-                    onChange={(e) => setRole(e.target.value)}
-                    id="role"
-                  >
-                    {!loading ? (
-                      roles.map((data) => (
-                        <MenuItem key={data.id} value={data.name}>
-                          {data.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <span>Loading ...</span>
-                    )}
-                  </TextField>
-                </Grid>
-
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    select
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="time_zone"
-                    label="Time Zone"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="time_zone"
-                  >
-                    <MenuItem value="AKST">Alaska Standard Time</MenuItem>
-                    <MenuItem value="PST">Pacific Standard Time</MenuItem>
-                    <MenuItem value="CST">Central Standard Time</MenuItem>
-                    <MenuItem value="EST">Eastern Standard Time</MenuItem>
-                  </TextField>
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    required
-                    select
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="group"
-                    label="Group"
-                    type="text"
-                    onChange={(e) => setGroup(e.target.value)}
-                    id="group"
-                  >
-                    {!loading2 ? (
-                      groups.map((data) => (
-                        <MenuItem key={data.id} value={data.name}>
-                          {data.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <span>Loading ...</span>
-                    )}
-                  </TextField>
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                  required
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="job_title"
-                    label="Job Title"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="job_title"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                   <NumberFormat
-                   required
-                      customInput={TextField}
-                      size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="bar_no"
-                      label="Bar #"
-                      onChange={(e) => onChange(e)}
-                      id="bar_no"
-
-                      format="######"
-                      type="tel"
-                    />
-                </Grid>
-              </Grid>
-              <Box mt={4} mb={2}>
-                <Divider />
-                <Typography mt={2} component="h3" color="primary" variant="h5">
-                  Contact Info
-                </Typography>
-              </Box>Admin
-              <Grid
-                container
-                spacing={2}
-                sx={{
-                  "& .MuiTextField-root": { m: 1, width: "14rem" },
-                }}
-              >
-                <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="street"
-                    label="Street"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="street"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="suite"
-                    label="Suite"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="suite"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="city"
-                    label="City"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="city"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="state"
-                    label="State"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="state"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <NumberFormat
-                      customInput={TextField}
-                      format="#####"
-                      size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="zip"
-                      label="Zip"
-                      type="tel"
-                      onChange={(e) => onChange(e)}
-                      id="zip"
-
-                    />
-                </Grid>
-                <Grid item lg={3}> 
-                  <NumberFormat
-                      customInput={TextField}
-                      format="####"
-                      size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="ext"
-                      label="+4"
-                      type="tel"
-                      onChange={(e) => onChange(e)}
-                      id="ext"
-
-                    />
-                </Grid>
-                <Grid item lg={3}>
-                  <TextField
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="p_email"
-                    label="Personal Email"
-                    type="email"
-                    onChange={(e) => onChange(e)}
-                    id="p_email"
-                  />
-                </Grid>
-                <Grid item lg={3}>
-                  <Box mt={1} ml={1}>
-                    <Button variant="contained" color="primary">
-                      Reset Password
-                    </Button>
-                  </Box>
-                </Grid>
-                <Grid item lg={3}>
-                  
-                  <NumberFormat
-                      customInput={TextField}
-                      format="### ### ####"
-                       size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="mobile"
-                      label="Mobile #"
-                      type="phone"
-                      onChange={(e) => onChange(e)}
-                      id="mobile"
-
-                    />
-                </Grid>
-                <Grid item lg={3}>
-                  <NumberFormat
-                      customInput={TextField}
-                      format="### ### ####"
-                       size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="home"
-                      label="Home #"
-                      type="phone"
-                      onChange={(e) => onChange(e)}
-                      id="home"
-
-                    />
-                </Grid>
-                <Grid item lg={3}>
-                  <NumberFormat
-                      customInput={TextField}
-                      format="### ### ####"
-                      size="small"
-                      margin="normal"
-                      variant="outlined"
-                      name="work"
-                      label="Work #"
-                      type="phone"
-                      onChange={(e) => onChange(e)}
-                      id="work"
-
-                    />
-                </Grid>
-                <Grid item lg={3}>
-              
-                  <NumberFormat
-                    customInput={TextField}
-                    format="####"
-                    size="small"
-                    margin="normal"
-                    variant="outlined"
-                    name="phone_ext"
-                    label="Extesion"
-                    type="text"
-                    onChange={(e) => onChange(e)}
-                    id="phone_ext"
-                    />
-                </Grid>
-              </Grid>
-              <Grid item lg={12}>
-                <Box
-                  sx={{
-                    "& .MuiButton-root": { m: 1, mr:5 },
-                    float: "right",
-                    color:"white"
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    type="submit"
-                    sx={{ color: "white" }}
-                    
-                  >
-                    Activate
-                  </Button>
-                  
-                  <Button variant="contained" color="warning"sx={{color:"#fff"}}>
-                    Deactivate
-                  </Button>
-                  <Button variant="contained" color="error" sx={{color:"#fff"}}>
-                    Delete
-                  </Button>
-                </Box>
-              </Grid>
+              <CreateUser/>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Close</Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+           
+            open={open2}
+            onClose={handleClose2}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth="true"
+            maxWidth="xl"
+          >
+            <DialogTitle id="alert-dialog-title">{"Add New User"}</DialogTitle>
+            <DialogContent>
+              <UpdateUser data={userId}/>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose2}>Close</Button>
             </DialogActions>
           </Dialog>
         </Stack>
@@ -755,6 +208,9 @@ const User = () => {
                 </TableCell>
                 <TableCell>
                   <Typography color="white">Status</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="white">Action</Typography>
                 </TableCell>
                 
                 <TableCell>

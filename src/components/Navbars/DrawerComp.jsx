@@ -3,17 +3,14 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions/auth";
 import Chatting from "../Chat/Chat";
 
 // styling imports
 import {
-  Box,
-  Toolbar,
-  Typography,
+  
   IconButton,
   Menu,
   MenuItem,
@@ -22,29 +19,29 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
+
   DialogActions,
   Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { SecNavbar } from "../../styles/styles";
+
 
 import {
   Message,
   EmailRounded,
   CalendarToday,
   CheckBox,
-  Person,
+
   NotificationAdd,
   Settings,
   Star,
-  StarBorder,
+
 } from "@mui/icons-material/";
 import { useToggle } from "../../context/useToggle";
 import Calender from "../Dashboard/Calender";
-import ViewTasks from "../Tasks/ViewTasks";
+
 import Favorites from "../Favorite/Favorites";
-import serverTime from "../../utils/ServerTime";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import { useMediaQuery } from "react-responsive";
 import {
@@ -52,18 +49,11 @@ import {
   List,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
+
 } from "@mui/material";
 
 export const NavBarSecResponsive = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 1224px)",
-  });
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-  const isWeekly = useSelector((state) => state.data.isWeekly);
   const user = useSelector((state) => state.auth.user);
 
   const dispatch = useDispatch();
@@ -77,16 +67,6 @@ export const NavBarSecResponsive = () => {
   const handleCloseFav = () => {
     setOpenFav(false);
   };
-  const [openTask, setOpenTask] = useState(false);
-
-  const handleClickOpenTask = () => {
-    setOpenTask(true);
-  };
-
-  const handleCloseTask = () => {
-    setOpenTask(false);
-  };
-
   const [openCal, setOpenCal] = useState(false);
 
   const handleClickOpenCal = () => {
@@ -107,10 +87,6 @@ export const NavBarSecResponsive = () => {
     setOpenChat(false);
   };
 
-  const history = useHistory();
-  const [isLogout, setIsLogout] = useToggle(false);
-  const today = new Date();
-  const time = today.toLocaleTimeString();
   const [localuser, setLocalUser] = useState({
     username: "Admin",
     is_firm: false,
@@ -136,7 +112,7 @@ export const NavBarSecResponsive = () => {
 
   const [settingAcnchorEl2, setSettingAcnchorEl2] = useState(null);
 
-  const [anchorEl2, setAnchorEl2] = React.useState(null);
+
 
   const handleLogout = () => {
     console.log("logout button just clicked");
@@ -145,20 +121,6 @@ export const NavBarSecResponsive = () => {
   };
 
   const open = Boolean(anchorEl);
-  const open2 = Boolean(anchorEl);
-
-  const userRoleChecker = () => {
-    switch (user.username) {
-      case "admin":
-        return "Admin";
-      case "firm":
-        return "Firm";
-      case "lawyer":
-        return "Lawyer";
-      default:
-        return "Client";
-    }
-  };
 
   const openSetting2 = Boolean(settingAcnchorEl2);
 

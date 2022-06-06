@@ -1,11 +1,10 @@
 /** @format */
-/** @format */
 
 import React, { Fragment, useEffect, useState } from "react";
 import { signOut, reset } from "../../redux/features/authSlice";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+
 import { useDispatch, useSelector } from "react-redux";
 // import { logout } from "../../actions/auth";
 import Chatting from "../Chat/Chat";
@@ -23,7 +22,7 @@ import {
 	Dialog,
 	DialogTitle,
 	DialogContent,
-	DialogContentText,
+
 	DialogActions,
 	Button,
 } from "@mui/material";
@@ -39,28 +38,24 @@ import {
 	NotificationAdd,
 	Settings,
 	Star,
-	StarBorder,
+
 } from "@mui/icons-material/";
 import { useToggle } from "../../context/useToggle";
 import Calender from "../Dashboard/Calender";
-import ViewTasks from "../Tasks/ViewTasks";
+
 import Favorites from "../Favorite/Favorites";
-import serverTime from "../../utils/ServerTime";
+
 
 import { useMediaQuery } from "react-responsive";
 
 import { NavBarSecResponsive } from "./DrawerComp";
 
-const NavbarSec = () => {
-	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-	const { user } = useSelector((state) => state.auth.user);
+const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.user);
 
-	const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-	const isDesktopOrLaptop = useMediaQuery({
-		query: "(min-width: 1224px)",
-	});
+
+	
 	const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-	const isWeekly = useSelector((state) => state.data.isWeekly);
+
 
 	const dispatch = useDispatch();
 
@@ -75,13 +70,8 @@ const NavbarSec = () => {
 	};
 	const [openTask, setOpenTask] = useState(false);
 
-	const handleClickOpenTask = () => {
-		setOpenTask(true);
-	};
 
-	const handleCloseTask = () => {
-		setOpenTask(false);
-	};
+
 
 	const [openCal, setOpenCal] = useState(false);
 
@@ -103,10 +93,6 @@ const NavbarSec = () => {
 		setOpenChat(false);
 	};
 
-	const history = useHistory();
-	const [isLogout, setIsLogout] = useToggle(false);
-	const today = new Date();
-	const time = today.toLocaleTimeString();
 	const [localuser, setLocalUser] = useState({
 		username: "Admin",
 		is_firm: false,

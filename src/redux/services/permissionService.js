@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { CONFIG } from "../../api/MatterApi";
 
-const API_URL = "https://dextera-lawfirm.herokuapp.com/user/auth/";
+const API_URL = `${process.env.REACT_APP_API_URL}/user/auth/`;
 // Create new permission
 const createpermission = async (permissionData, token) => {
 	//   const config = {
@@ -19,7 +19,7 @@ const createpermission = async (permissionData, token) => {
 // Get user permissions
 const getPermissions = async (id) => {
 	const response = await axios.get(
-		`http://localhost:8000/user/auth/role-permissions/${id}/`,
+		`${process.env.REACT_APP_API_URL}/user/auth/role-permissions/${id}/`,
 		CONFIG,
 	);
 
@@ -30,7 +30,7 @@ const getPermissions = async (id) => {
 const updatePermission = async (id, value) => {
 	
 	const response = await axios.patch(
-		`http://localhost:8000/user/auth/permissions/${id}/`,
+		`${process.env.REACT_APP_API_URL}/user/auth/permissions/${id}/`,
 		value, 
 		CONFIG,
 	);
@@ -42,7 +42,7 @@ const updatePermission = async (id, value) => {
 // Delete user permission
 const deletePermission = async (id) => {
 	const response = await axios.delete(
-		`https://dextera-lawfirm.herokuapp.com/user/auth/role-permissions/${id}/`,
+		`${process.env.REACT_APP_API_URL}/user/auth/role-permissions/${id}/`,
 		CONFIG,
 	);
 

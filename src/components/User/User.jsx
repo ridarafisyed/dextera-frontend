@@ -28,7 +28,6 @@ import axios from "axios";
 import { ActionAlerts } from "../../utils/ActionAlerts";
 import { CONFIG } from "../../api/MatterApi";
 
-import CreateUser from "./CreateUser";
 import {
   Search,
   SearchIconWrapper,

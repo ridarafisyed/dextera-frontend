@@ -1,34 +1,13 @@
 /** @format */
 
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment,  useEffect } from "react";
 import axios from "axios"
 import { CONFIG } from "../../api/MatterApi";
-
-import { toast } from 'react-toastify'
-
-import {
-  Table,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,TableBody,
-  Paper,
-  Button,
-  
-  Typography,
-  IconButton,
-  Switch,
-} from "@mui/material";
+import TableCell from "@mui/material/TableCell"
+import TableRow from "@mui/material/TableRow"
+import Button from "@mui/material/Button"
 import RectangleIcon from '@mui/icons-material/Rectangle';
-import { useSelector, useDispatch } from "react-redux";
 import { useToggle } from "../../context/useToggle";
-import {
-	getPermissions,
-	updatePermission
-} from "../../redux/features/permissionSlice";
-
-
-
 
 const RoleFuncions = ({permission}) => {
   const name = permission.name
@@ -45,7 +24,6 @@ const RoleFuncions = ({permission}) => {
   const [isRegion, setIsRegion] = useToggle(permission.is_region)
   const [isAll, setIsAll] = useToggle(false)
          
-const dispatch = useDispatch()
 const updateFunctions = () =>{
   const is_view = isView
   const is_edit = isEdit
@@ -72,45 +50,35 @@ const updateFunctions = () =>{
 }
 const settingAll = () =>{
   setIsAll(isAll)
-  if (permission.name === "Contact") {
-    if (isAll) {
-      setIsView(true)
-      setIsEdit(true)
-      setIsCreate(true)
-      setIsDelete(true)
-      setIsContacts(true)
-      setIsTeam(true)
-      setIsOffice(true)
-      setIsRegion(true)
-      
+    if (isAll === false) {
+      if (isContacts === false){
+        setIsContacts(isContacts)
+      }
+      if (isTeam === false){
+        setIsTeam(isTeam)
+      }
+      if (isOffice === false){
+        setIsOffice(isOffice)
+      }
+      if (isRegion === false){
+        setIsRegion(isRegion)
+      }
     }
     else {
-      setIsView(false)
-      setIsEdit(false)
-      setIsCreate(false)
-      setIsDelete(false)
-      setIsContacts(false)
-      setIsTeam(false)
-      setIsOffice(false)
-      setIsRegion(false)
+      if (isContacts === true){
+        setIsContacts(isContacts)
+      }
+      if (isTeam === true){
+        setIsTeam(isTeam)
+      }
+      if (isOffice === true){
+        setIsOffice(isOffice)
+      }
+      if (isRegion === true){
+        setIsRegion(isRegion)
+      }
       
     }
-  }
-  else {
-    if (isAll) {
-      setIsView(true)
-      setIsEdit(true)
-      setIsCreate(true)
-      setIsDelete(true)
-    }
-    else {
-      setIsView(false)
-      setIsEdit(false)
-      setIsCreate(false)
-      setIsDelete(false)      
-    }
-
-  }
  }
   
 
@@ -118,8 +86,6 @@ useEffect(() => {
   updateFunctions()
 }, [isView,isEdit,isCreate,isDelete,isContacts,isTeam,isOffice,isRegion])
 
-
- 
   return (
     <Fragment>
       <TableRow>
@@ -376,6 +342,7 @@ useEffect(() => {
                 <RectangleIcon />
               </Button>
             </TableCell>
+           
           </>
         ) : (
           <>
@@ -423,32 +390,19 @@ useEffect(() => {
                 <RectangleIcon />
               </Button>
             </TableCell>
-            <TableCell>
+             <TableCell>
               <Button
-                sx={
-                  isAll ? {
-                        "color": "#4BB543",
-                        "backgroundColor": "#4BB543",
-                        "&:hover": {
-                          backgroundColor: "#4BB545",
-                          color: "#4BB545",
-                        },
-                      }
-                    : {
-                        "color": "#D3D3D3",
-                        "backgroundColor": "#D3D3D3",
-                        "&:hover": {
-                          backgroundColor: "#D3D3D3",
-                          color: "#D3D3D3",
-                        },
-                      }
-                }
-                onClick={()=>settingAll()}
+                sx={{
+                  color: "#eee",
+                  backgroundColor: "#eee",
+                }}
                 size='large'
                 aria-label='toggle'>
                 <RectangleIcon />
               </Button>
             </TableCell>
+            
+            
           </>
         )}
       </TableRow>

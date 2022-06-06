@@ -3,7 +3,7 @@
 import axios from "axios";
 import { CONFIG } from "../../api/MatterApi";
 
-const API_URL = "https://dextera-lawfirm.herokuapp.com/user/auth/";
+const API_URL = `${process.env.REACT_APP_API_URL}/user/auth/`;
 
 // Register user
 const signUp = async (userData) => {

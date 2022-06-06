@@ -1,52 +1,40 @@
 /** @format */
 
 import React, { Fragment, useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+
 
 import axios from "axios";
-import {
-	Table,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	TableBody,
-	Button,
-	List,
-	Grid,
-	Box,
-	Typography,
-	ListItem,
-	ListItemText,
-	IconButton,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	TextField,
-	Paper,
-} from "@mui/material";
-import RectangleIcon from "@mui/icons-material/Rectangle";
+import Table from "@mui/material/Table"
+import TableCell from "@mui/material/TableCell"
+import TableBody from "@mui/material/TableBody"
+import TableContainer from "@mui/material/TableContainer"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import Button from "@mui/material/Button"
+import List from "@mui/material/List"
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import ListItem from "@mui/material/ListItem"
+import IconButton from "@mui/material/IconButton"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import TextField from "@mui/material/TextField"
+import Paper from "@mui/material/Paper"
 import RoleFunctions from "./RoleFuncions";
 import ClearIcon from "@mui/icons-material/Clear";
 import { ActionAlerts } from "../../utils/ActionAlerts";
 
 import { CONFIG } from "../../api/MatterApi";
 import { useSelector, useDispatch } from "react-redux";
-import {
-	getPermissions,
-	reset,
+import {getPermissions} from "../../redux/features/permissionSlice";
 
-} from "../../redux/features/permissionSlice";
-import { useToggle } from "../../context/useToggle";
 
 const ManageRole = () => {
 	const dispatch = useDispatch();
-
-
-	const { user } = useSelector((state) => state.auth);
-	const { updateData, setUpdateData } = useState([]);
-	const { permissions, isLoading, isError, message } = useSelector(
+	const { permissions } = useSelector(
 		(state) => state.permissions,
 	);
 

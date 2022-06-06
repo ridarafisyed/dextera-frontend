@@ -13,6 +13,7 @@ import newTabsReducer from "../redux/features/searchTabSlice";
 import favoriteReducer from "../redux/features/favoriteSlice";
 import rolefnsReducer from "../redux/features/roleFnSlice";
 import permissionReducer from "../redux/features/permissionSlice";
+import memberReducer from "../redux/features/selectMemberSlice"
 import auth from "../redux/features/authSlice";
 
 export default combineReducers({
@@ -26,4 +27,5 @@ export default combineReducers({
 	tabs: tabsReducer,
 	newTabs: newTabsReducer,
 	permissions: permissionReducer,
+	member: memberReducer
 });

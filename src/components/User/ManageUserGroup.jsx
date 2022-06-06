@@ -2,32 +2,30 @@
 
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Button,
-  Box,
-  List,
-  Table,
-  Paper,
-  Grid,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableBody,
-  ListItem,
-  ListItemText,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
+import List from "@mui/material/List"
+import Table from "@mui/material/Table"
+import Paper from "@mui/material/Paper"
+import Grid from "@mui/material/Grid"
+import TableCell from "@mui/material/TableCell"
+import TableContainer from "@mui/material/TableContainer"
+import TableHead from "@mui/material/TableHead"
+import TableRow from "@mui/material/TableRow"
+import TableBody from "@mui/material/TableBody"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import Typography from "@mui/material/Typography"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import Stack from "@mui/material/Stack"
+import TextField from "@mui/material/TextField"
+import FormControl from "@mui/material/FormControl"
+import InputLabel from "@mui/material/InputLabel"
+import Select from "@mui/material/Select"
+import MenuItem from "@mui/material/MenuItem"
 import {
   LinkButton,
   Search,
@@ -173,16 +171,16 @@ const ManageUserGroup = () => {
         }else if((filter === "role") &&(val.role.toLowerCase().includes(searchItem.toLowerCase()))){
           return val
         }
-        else if((filter === "name") &&(val.l_name.toLowerCase().includes(searchItem.toLowerCase()))){
+        else if((filter === "name") &&(val.last_name.toLowerCase().includes(searchItem.toLowerCase()))){
           return val
         }
-        else if((filter === "name") &&(val.f_name.toLowerCase().includes(searchItem.toLowerCase()))){
+        else if((filter === "name") &&(val.first_name.toLowerCase().includes(searchItem.toLowerCase()))){
           return val
         }
       }).map((data) => 
           <TableRow>
-            <TableCell>{data.f_name}</TableCell>
-            <TableCell>{data.l_name} </TableCell>
+            <TableCell>{data.first_name}</TableCell>
+            <TableCell>{data.last_name} </TableCell>
             <TableCell>{data.role}</TableCell>
             <TableCell>{data.group}</TableCell>
           </TableRow>
