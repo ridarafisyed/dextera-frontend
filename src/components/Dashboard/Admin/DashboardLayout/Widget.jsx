@@ -52,7 +52,7 @@ export default function Widget({ id, onRemoveItem }) {
         <IconButton
           aria-label="drag"
           className="drag"
-          sx={{ position: "fixed", left: "16px" }}
+          sx={{ position: "fixed", left: "16px" }} 
         >
           <MoreVertIcon fontSize="small" />
         </IconButton>

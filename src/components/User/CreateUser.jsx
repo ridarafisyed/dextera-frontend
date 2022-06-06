@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Fragment, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import TextField from "@mui/material/TextField"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
@@ -18,7 +19,9 @@ import {useToggle}  from "../../context/useToggle";
 import  {CONFIG}  from "../../api/MatterApi";
 
 const CreateUser = ({userId}) => {
-  console.log(userId)
+
+  const history = useHistory();
+
   // const [data, setData] = useState([])
   const [roles, setRoles] = useState([]);
   const [role, setRole] = useState("");
@@ -144,7 +147,7 @@ const handleDeactivate = (id) => {
       });
   };
 const handleSubmit = (e) => {
-    e.preventDefault();
+
     // console.log("some thing happen")
     const username = first_name.toLowerCase() + last_name.toLowerCase()
     const password = username
@@ -179,9 +182,8 @@ const handleSubmit = (e) => {
       .then((res) => {
       
         return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
+            // <Redirect to='/users' />
+            history.push("/users", { params: false })
         );
       })
       .catch((err) => {

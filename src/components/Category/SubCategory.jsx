@@ -1,23 +1,21 @@
 /** @format */
 
-import React, { Fragment, useState, useEffect, useCallback } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Button,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@mui/material";
+import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import Typography from "@mui/material/Typography"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogTitle from "@mui/material/DialogTitle"
+import TextField from "@mui/material/TextField"
 
 import ClearIcon from "@mui/icons-material/Clear";
-import { ActionAlerts } from "../../utils/ActionAlerts";
+
 import { CONFIG } from "../../api/MatterApi";
 
 const SubCategory = () => {

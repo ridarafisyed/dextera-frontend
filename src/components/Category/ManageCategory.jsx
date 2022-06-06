@@ -2,7 +2,10 @@
 
 import React, { Fragment } from "react";
 
-import { Typography, Grid, Button, Box } from "@mui/material";
+import Typography from "@mui/material/Typography"
+import Grid from "@mui/material/Grid"
+import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
 
 import SubCategory from "./SubCategory";
 import Category from "./Category";

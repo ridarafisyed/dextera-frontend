@@ -1,6 +1,10 @@
 /** @format */
 
-import { Box, Typography, Button, TextField, Chip } from "@mui/material";
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button"
+import TextField from "@mui/material/TextField"
+import Chip from "@mui/material/Chip"
 import SendIcon from "@mui/icons-material/Send";
 import React, { Fragment } from "react";
 import Avatar from "@mui/material/Avatar";

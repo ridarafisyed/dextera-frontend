@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Fragment, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import TextField from "@mui/material/TextField"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
@@ -18,15 +19,18 @@ import {useToggle}  from "../../context/useToggle";
 import  {CONFIG}  from "../../api/MatterApi";
 
 const UpdateUser = ( {data} ) => {
+  const history = useHistory();
+
   const [roles, setRoles] = useState([]);
-  const [role, setRole] = useState("");
-  const [group, setGroup] = useState("");
+  const [role, setRole] = useState(data.role);
+  const [group, setGroup] = useState(data.group);
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
   const [user, setUser] = useState([])
+  
   const [approvel, setApprovel] = useToggle(false);
   const [userData, setUserData] = useState({
       first_name:data.first_name,
@@ -114,23 +118,24 @@ const handleDelete = (id) => {
       )
       .then((res) => {
         return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
+          window.location.reload(false)
         );
       });
   };
 const handleDeactivate = (id) => {
+  let is_active = true
+  if (is_active === "True"){
+    is_active = false
+  }
+     const body = JSON.stringify({is_active})
     axios
       .patch(
-        `${process.env.REACT_APP_API_URL}/user/auth/is-active-user/${id}/`, false,
+        `${process.env.REACT_APP_API_URL}/user/auth/is-active-user/${id}/`, body,
         CONFIG,
       )
       .then((res) => {
         return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
+           window.location.reload(false)
         );
       });
   };
@@ -157,14 +162,11 @@ const handleSubmit = (e) => {
       home,
       work_no,
       phone_ext,})
-      axios.put(`${process.env.REACT_APP_API_URL}/api/update-member/${data.id}`,body, CONFIG)
+      axios.put(`${process.env.REACT_APP_API_URL}/api/member-update/${data.id}/`,body, CONFIG)
       .then((res) => {
       
         return (
-          <ActionAlerts
-            value={{ status: res.statusText, message: "Success" }}
-          />
-          
+           window.location.reload(false)          
         );
       })
       .catch((err) => {
@@ -307,6 +309,7 @@ const handleSubmit = (e) => {
                     margin="normal"
                     variant="outlined"
                     value = {role}
+                    defaultValue={data.role}
                     name="role"
                     label="Role"
                     onChange={(e) => setRole(e.target.value)}
@@ -330,6 +333,7 @@ const handleSubmit = (e) => {
                     size="small"
                     margin="normal"
                     value ={time_zone}
+                    
                     variant="outlined"
                     name="time_zone"
                     label="Time Zone"
@@ -350,6 +354,7 @@ const handleSubmit = (e) => {
                     size="small"
                     margin="normal"
                     value={group}
+                    defaultValue={data.group}
                     variant="outlined"
                     name="group"
                     label="Group"
@@ -615,7 +620,7 @@ const handleSubmit = (e) => {
                   </Button>
                   
                   <Button variant="contained" color="warning"sx={{color:"#fff"}} onClick={()=>handleDeactivate(data.id)}>
-                    {data.is_active ? 'Deactivate': 'Activate'}
+                    {data.is_active === "True" ? 'Deactivate': 'Activate'}
                   </Button>
                   <Button variant="contained" color="error" sx={{color:"#fff"}} onClick={()=>handleDelete(data.id)}>
                     Delete

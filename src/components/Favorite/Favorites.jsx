@@ -6,26 +6,49 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  IconButton,
+  Avatar,
   ListItemText,
+  ListItemAvatar,
 } from "@mui/material";
-
-import { Star } from "@mui/icons-material";
+import CloseIcon from '@mui/icons-material/Close';
+import StarIcon from "@mui/icons-material/Star";
 import { useDispatch, useSelector } from "react-redux";
+import { removeFav } from "../../redux/features/favoriteSlice";
 
 const Favorites = () => {
-  const favList = useSelector((state) => state.favorite.favorite);
+  const favorite = useSelector((state) => state.favorite)
   const dispatch = useDispatch();
+  const handleRemoveFav = (fav) => {
+    dispatch(removeFav(fav));
+  };
   return (
     <div>
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <Star sx={{ color: "orange" }} />
-            </ListItemIcon>
-          </ListItemButton>
-          <ListItemText primary="Favorite 1" />
-        </ListItem>
+     <List>
+        {favorite ?
+        (favorite.map((item)=>(
+            <ListItem key={item.id}
+              secondaryAction={
+                <IconButton edge="end" aria-label="delete" onClick={()=>handleRemoveFav(item)}>
+                  <CloseIcon />
+                </IconButton>
+              }
+            >
+              <ListItemAvatar>
+                <Avatar sx={{bgcolor:"#eee"}}>
+                  <StarIcon sx={{color:"orange"}}/>
+                </Avatar>
+              </ListItemAvatar>
+              {item.name === '/'? <ListItemText
+                primary="Home"
+               
+              />: <ListItemText
+                primary={item.name}
+               
+              />}
+            </ListItem>
+        ))): null}
+        
       </List>
     </div>
   );

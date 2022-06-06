@@ -42,12 +42,18 @@ import { CONFIG } from "../../api/MatterApi";
 const ManageUserGroup = () => {
   const [filter, setFilter] = useState("");
   const [searchItem, setSearchItem] = useState("")
+  const [selectedUser, setSelectedUser] = useState({})
 
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
-  const [group, setGroup] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [groups, setGroups] = useState([]);
   const [usersData, setUsersData] = useState([]);
+  const [roles, setRoles] = useState([]);
+	const [role, setRole] = useState(null);
+  const [error, setError] = useState("null")
+	const [loadingRole, setLoadingRole] = useState(true);
   const [loading, setLoading] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
   const [status, setStatus] = useState("")
@@ -60,6 +66,19 @@ const ManageUserGroup = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  
+  const [openView, setOpenView] = useState(false);
+
+  const handleClickOpenView = (data) => {
+    setSelectedUser(data)
+    setRole(data.role)
+    setGroup(data.group)
+    setOpenView(true);
+  };
+
+  const handleCloseView = () => {
+    setOpenView(false);
+  };
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -69,6 +88,21 @@ const ManageUserGroup = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const FetchRoleData = () => {
+		axios
+			.get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
+			.then((res) => {
+				console.log(res.data);
+				setLoadingRole(false);
+				setStatus(res.statusText);
+				setRoles(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				setLoadingRole(false);
+				setError(err.message);
+			});
+	};
   const FetchUserData = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/api/create-member/`, CONFIG)
@@ -89,7 +123,7 @@ const ManageUserGroup = () => {
       .get(`${process.env.REACT_APP_API_URL}/user/auth/groups/`, CONFIG)
       .then((res) => {
         setLoading(false);
-        setGroup(res.data);
+        setGroups(res.data);
       })
       .catch((err) => {
         setLoading(false);
@@ -98,6 +132,7 @@ const ManageUserGroup = () => {
   useEffect(() => {
     FetchData();
     FetchUserData();
+    FetchRoleData();
   }, []);
   const handleDelete = (id) => {
     axios
@@ -107,6 +142,28 @@ const ManageUserGroup = () => {
         return (
           <ActionAlerts
             value={{ status: res.statusText, message: "Success" }}
+          />
+        );
+      });
+  };
+  const handleSubmitUpdate = (e) => {
+  
+    const body = JSON.stringify({ group, role });
+    axios
+      .patch(`${process.env.REACT_APP_API_URL}/api/member-update/${selectedUser.id}/`, body, CONFIG)
+      .then((res) => {
+        FetchData();
+        return (
+          <ActionAlerts
+            value={{ status: res.statusText, message: "Success" }}
+          />
+        );
+      })
+      .catch((err) => {
+        FetchData();
+        return (
+          <ActionAlerts
+            value={{ status: err.statusText, message: "Success" }}
           />
         );
       });
@@ -134,21 +191,23 @@ const ManageUserGroup = () => {
       });
   };
   const showGroup = () => {
-    if (group.length === 0) {
+    if (groups.length === 0) {
       return <p> No data found...</p>;
     } else {
-      return group.map((data) => (
+      return groups.map((data) => (
         <Box mt={1}>
           <List>
             <ListItem disablePadding>
-              <ListItemText>{data.name}</ListItemText>
+              <ListItemText color="primary"sx={{textTransform:"uppercase"}}>{data.name}</ListItemText>
               <Button
                 variant="contained"
+                size="small"
                 value={data.id}
                 onClick={() => handleDelete(data.id)}
                 sx={{
                   borderRadius: "0.5rem",
                   float: "right",
+                  
                 }}
               >
                 <ClearIcon />
@@ -159,6 +218,7 @@ const ManageUserGroup = () => {
       ));
     }
   };
+
   const showUser = () => {
     if (usersData.length === 0) {
       return <p>No data found...</p>;
@@ -183,6 +243,9 @@ const ManageUserGroup = () => {
             <TableCell>{data.last_name} </TableCell>
             <TableCell>{data.role}</TableCell>
             <TableCell>{data.group}</TableCell>
+            <TableCell>
+                   <Button onClick={()=>handleClickOpenView(data)}> View</Button>
+            </TableCell>
           </TableRow>
   );
     
@@ -252,6 +315,115 @@ const ManageUserGroup = () => {
             + New Group
           </Button>
           <Dialog
+            open={openView}
+            onClose={handleCloseView}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth="true"
+            maxWidth="md"
+            sx={{
+              alignContent:"center"
+            }}
+          >
+            <DialogTitle id="alert-dialog-title">{"Update Group & Role"}</DialogTitle>
+            <DialogContent>
+             
+              <Box component="form" autoComplete="off"
+                    Validate onSubmit={(e) => handleSubmitUpdate(e)}>
+                <Typography component="h5" variant="h5">
+                  {selectedUser.first_name } {selectedUser.last_name }
+                </Typography>
+        
+                  <Grid
+                        container
+                        spacing={2}
+                        mt={2}
+                        sx={{
+                          "& .MuiTextField-root": { m: 1, width: "14rem", "input::-webkit-outer-spin-button": {
+                            webkitAappearance: "none"
+                          },  },
+                        }}
+
+                      >    
+                        <Grid item >
+                          <TextField
+                            select
+                            size="small"
+                            margin="normal"
+                            variant="outlined"
+                            value = {role}
+                            name="role"
+                            label="Role"
+                            onChange={(e) => setRole(e.target.value)}
+                            id="role"
+                          >
+                            {!loading ? (
+                              roles.map((data) => (
+                                <MenuItem key={data.id} value={data.name}>
+                                  {data.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <span>Loading ...</span>
+                            )}
+                          </TextField>
+                        </Grid>
+                        <Grid item >
+                          <TextField
+                    
+                            select
+                            size="small"
+                            margin="normal"
+                            value={group}
+                            variant="outlined"
+                            name="group"
+                            label="Group"
+                            type="text"
+                            onChange={(e) => setGroup(e.target.value)}
+                            id="group"
+                          >
+                            {!loading ? (
+                              groups.map((data) => (
+                                <MenuItem key={data.id} value={data.name}>
+                                  {data.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <span>Loading ...</span>
+                            )}
+                          </TextField>
+                        </Grid>
+                        
+                        
+                      </Grid>
+
+                      <Grid item >
+                        <Box
+                          sx={{
+                            "& .MuiButton-root": { m: 1, mr:5 },
+                            float: "right",
+                            color:"white"
+                          }}
+                        >
+                        <Button
+                            variant="contained"
+                            color="success"
+                            type="submit"
+                            sx={{ color: "white" }}
+                            
+                          >
+                            Update
+                          </Button>
+                        </Box>
+                      </Grid>
+              
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseView}>Close</Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
             component="form"
             Validate
             onSubmit={(e) => handleSubmit(e)}
@@ -302,6 +474,9 @@ const ManageUserGroup = () => {
                   </TableCell>
                   <TableCell>
                     <Typography color="white">Group</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography color="white">Action</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>

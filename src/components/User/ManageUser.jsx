@@ -24,7 +24,7 @@ import {
   SearchIconWrapper,
   StyledInputBase,
 } from "../../styles/styles";
-
+import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { useToggle } from "../../context/useToggle";
 import{ useDispatch} from "react-redux"
@@ -35,7 +35,7 @@ const User = () => {
   const [userId, setUserId] = useState(null)
   const [isActive, setIsActive] = useToggle(false);
   const [searchItem, setSearchItem] = useState("")
-
+  const location = useLocation();
 
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
@@ -52,7 +52,8 @@ const User = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
-  const handleClickOpen = (data) => {
+  const handleClickOpen = () => {
+    
     setOpen(true);
   };
  const handleClickOpen2 = (data) => {
@@ -68,7 +69,7 @@ const User = () => {
 
   const FetchData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/create-member/`, CONFIG)
+      .get(`${process.env.REACT_APP_API_URL}/api/members-list/`, CONFIG)
       .then((res) => {
         setLoading(false);
         setStatus(res.statusText);
@@ -80,6 +81,9 @@ const User = () => {
       });
   };
   useEffect(() => {
+    if (location.state)  {
+      handleClose(location.state.params)
+    }
     FetchData();
   }, []);
 
@@ -98,15 +102,15 @@ const User = () => {
         }
 
       }).map((data) => {if(isActive){
-        return data.is_active === "True"? (<TableRow>
+        return (data.is_active === "True")? (<TableRow>
           <TableCell>{data.first_name}</TableCell>
           <TableCell>{data.last_name}</TableCell>
           <TableCell>{data.c_email}</TableCell>
           <TableCell>{data.role}</TableCell>
           <TableCell>{data.group}</TableCell>
           <TableCell>{data.last_login}</TableCell>
-          <TableCell>{data.is_active === "True" ? "active":"inactive"}</TableCell>
-          <TableCell><Button onClick={()=>handleClickOpen2(data)}>View {data.id}</Button></TableCell>
+          <TableCell>{(data.is_active === "True") ? "active":"inactive"}</TableCell>
+          <TableCell><Button onClick={()=>handleClickOpen2(data)}>View</Button></TableCell>
           <TableCell></TableCell>
         </TableRow>) : null
       }
@@ -117,8 +121,8 @@ const User = () => {
           <TableCell>{data.role}</TableCell>
           <TableCell>{data.group}</TableCell>
           <TableCell>{data.last_login}</TableCell>
-          <TableCell>{data.is_active === "True" ? "active":"inactive"}</TableCell>
-          <TableCell><Button onClick={()=>handleClickOpen2(data)}>View{data.id}</Button></TableCell>
+          <TableCell>{(data.is_active === "True") ? "active" : "inactive"}</TableCell>
+          <TableCell><Button onClick={()=>handleClickOpen2(data)}>View</Button></TableCell>
           <TableCell></TableCell>
         </TableRow>});
   };

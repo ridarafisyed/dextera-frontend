@@ -2,45 +2,37 @@
 
 import React, { Fragment, useEffect, useState } from "react";
 import { signOut, reset } from "../../redux/features/authSlice";
-import { useHistory } from "react-router-dom";
-import { Redirect } from "react-router-dom";
+import {Redirect, useLocation } from 'react-router-dom'
+
 
 import { useDispatch, useSelector } from "react-redux";
-// import { logout } from "../../actions/auth";
 import Chatting from "../Chat/Chat";
-
 // styling imports
-import {
-	Box,
-	Toolbar,
-	Typography,
-	IconButton,
-	Menu,
-	MenuItem,
-	Fade,
-	Divider,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-
-	DialogActions,
-	Button,
-} from "@mui/material";
+import Box from "@mui/material/Box"
+import Toolbar from "@mui/material/Toolbar"
+import Typography from "@mui/material/Typography"
+import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
+import Fade from "@mui/material/Fade"
+import Divider from "@mui/material/Divider"
+import Dialog from "@mui/material/Dialog"
+import DialogTitle from "@mui/material/DialogTitle"
+import DialogContent from "@mui/material/DialogContent"
+import DialogActions from "@mui/material/DialogActions"
+import Button from "@mui/material/Button"
 import { Link } from "react-router-dom";
 import { SecNavbar } from "../../styles/styles";
 
-import {
-	Message,
-	EmailRounded,
-	CalendarToday,
-	CheckBox,
-	Person,
-	NotificationAdd,
-	Settings,
-	Star,
+import MessageIcon from "@mui/icons-material/Message"
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday"
+import CheckBoxIcon from "@mui/icons-material/CheckBox"
+import PersonIcon from "@mui/icons-material/Person"
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd"
+import SettingsIcon from "@mui/icons-material/Settings"
+import StarIcon from "@mui/icons-material/Star"
 
-} from "@mui/icons-material/";
-import { useToggle } from "../../context/useToggle";
 import Calender from "../Dashboard/Calender";
 
 import Favorites from "../Favorite/Favorites";
@@ -49,29 +41,50 @@ import Favorites from "../Favorite/Favorites";
 import { useMediaQuery } from "react-responsive";
 
 import { NavBarSecResponsive } from "./DrawerComp";
+import { addFav } from "../../redux/features/favoriteSlice";
 
-const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.user);
+const NavbarSec = () => {	
+	const { user } = useSelector((state) => state.auth.user);
+	const favorite = useSelector((state) => state.favorite)
 
-
-	
+	// location.pathname
 	const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
+	const [isPath, setIsPath] = useState(null)
 
 	const dispatch = useDispatch();
+	const location = useLocation()
 
 	const [openFav, setOpenFav] = useState(false);
+	const isPathExist =()=>{
+		const arr = favorite.filter((item) => item.name === location.pathname)
+		if (arr > 0){
+			setIsPath(true)
+		}
+		else{
+			setIsPath(false)
+		}
 
+	}
+	useEffect(()=>{
+		isPathExist()
+	},[])
 	const handleClickOpenFav = () => {
+		let name = location.pathname
+		let id = favorite.length + 1
+		if (isPath === false){
+			dispatch(addFav({id:id, name:name, page:window.location.href }))
+			setIsPath(true)
+		}
+		
+		
 		setOpenFav(true);
 	};
 
 	const handleCloseFav = () => {
 		setOpenFav(false);
 	};
-	const [openTask, setOpenTask] = useState(false);
-
-
-
+	const [openTask, setOpenTask] = useState(false)
 
 	const [openCal, setOpenCal] = useState(false);
 
@@ -188,7 +201,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 										vertical: "top",
 										horizontal: "left",
 									}}>
-									<Message />
+									<MessageIcon />
 								</IconButton>
 								<Dialog
 									className='nav-items'
@@ -230,7 +243,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 											"https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=someone@gmail.com",
 									}}
 									target='_blank'>
-									<EmailRounded />
+									<EmailRoundedIcon />
 								</IconButton>
 
 								<IconButton
@@ -245,7 +258,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 											backgroundColor: "#7a4ebf",
 										},
 									}}>
-									<CalendarToday />
+									<CalendarTodayIcon />
 								</IconButton>
 								<Dialog
 									Validate
@@ -286,7 +299,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 											backgroundColor: "#7a4ebf",
 										},
 									}}>
-									<CheckBox />
+									<CheckBoxIcon />
 								</IconButton>
 								<Menu
 									id='fade-menu'
@@ -319,17 +332,27 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 									className='nav-items'
 									aria-expanded={openSetting2 ? "true" : undefined}
 									aria-haspopup='true'
-									onClick={handleClickOpenFav}
-									sx={{
+									onClick={()=>handleClickOpenFav()}
+									sx={
+										isPath ? {
 										"fontSize": "2rem",
+										"color": "orange",
+										"&:hover": {
+											color: "orange",
+											backgroundColor: "#7a4ebf",
+										},
+									}: {
+										"fontSize": "2rem",
+										
 										"color": "white",
 										"&:hover": {
 											color: "white",
 											backgroundColor: "#7a4ebf",
 										},
 									}}>
-									<Star />
+									<StarIcon />
 								</IconButton>
+								
 								<Dialog
 									open={openFav}
 									onClose={handleCloseFav}
@@ -348,7 +371,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 									</DialogActions>
 								</Dialog>
 							</Box>
-							<NotificationAdd mr={2} />
+							<NotificationAddIcon mr={2} />
 							<Typography component='h5' variant='h6' ml={2} mr={2}>
 								|
 							</Typography>
@@ -360,7 +383,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 								className='nav-items'
 								aria-expanded={open ? "true" : undefined}
 								onClick={handleClick}>
-								<Person /> {user.username} - ({user.username} )
+								<PersonIcon /> {user.username} - ({user.username} )
 							</Button>
 							<Button
 								color='inherit'
@@ -392,7 +415,7 @@ const NavbarSec = () => {	const { user } = useSelector((state) => state.auth.use
 								sx={{
 									color: "white",
 								}}>
-								<Settings />
+								<SettingsIcon />
 							</IconButton>
 							<Menu
 								id='fade-menu'
