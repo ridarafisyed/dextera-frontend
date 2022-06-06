@@ -88,7 +88,7 @@ const AdminDashboard = () => {
       addTab({
         id: id,
         tab: e.target.value,
-      }),
+      })
     );
     dispatch(removeLastNewTab());
     setValue(id);
@@ -110,9 +110,9 @@ const AdminDashboard = () => {
         addNewTab({
           id: id,
           name: "newtab",
-        }),
+        })
       ),
-      5000,
+      5000
     );
 
     setValue(id);

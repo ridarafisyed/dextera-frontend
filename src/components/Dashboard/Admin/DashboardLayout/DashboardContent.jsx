@@ -137,7 +137,7 @@ function Content({ size: { width } }) {
   };
   const [items, setItems] = useState(originalItems);
   const [layouts, setLayouts] = useState(
-    getFromLS("layouts") || initialLayouts,
+    getFromLS("layouts") || initialLayouts
   );
   const onLayoutChange = (_, allLayouts) => {
     setLayouts(allLayouts);
@@ -183,6 +183,7 @@ function Content({ size: { width } }) {
         rowHeight={60}
         width={width}
         onLayoutChange={onLayoutChange}
+        draggableHandle={".drag"}
       >
         {displayItemList()}
       </ResponsiveGridLayout>
@@ -208,7 +209,7 @@ function saveToLS(key, value) {
       "rgl-8",
       JSON.stringify({
         [key]: value,
-      }),
+      })
     );
   }
 }

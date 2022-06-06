@@ -17,6 +17,7 @@ import RevenueInCards from "../Cards/RevenueIn";
 import RevenueOutCards from "../Cards/RevenueOut";
 import NewCustomerCards from "../Cards/NewCustomer";
 import LostCustomerCards from "../Cards/LostCustomer";
+import PanToolIcon from "@mui/icons-material/PanTool";
 
 import Map from "../Map";
 
@@ -47,7 +48,14 @@ export default function Widget({ id, onRemoveItem }) {
         padding: "1rem",
       }}
     >
-      <CardActions>
+      <CardActions sx={{ marginBottom: "10px" }}>
+        <IconButton
+          aria-label="drag"
+          className="drag"
+          sx={{ position: "fixed", left: "16px" }}
+        >
+          <PanToolIcon fontSize="small" />
+        </IconButton>
         <IconButton
           aria-label="delete"
           onClick={() => onRemoveItem(id)}
