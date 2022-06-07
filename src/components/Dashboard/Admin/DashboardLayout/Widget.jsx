@@ -9,7 +9,7 @@ import {
   CardContent,
   CardActions,
 } from "@mui/material";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@mui/icons-material/Close';
 
 import { Appointments, Calls, Marketing, Email } from "../Charts";
 

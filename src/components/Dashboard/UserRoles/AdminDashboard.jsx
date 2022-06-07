@@ -20,7 +20,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import PropTypes from "prop-types";
 
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@mui/icons-material/Close';
 import { MoreVert, Close } from "@mui/icons-material";
 
 // components of tabs

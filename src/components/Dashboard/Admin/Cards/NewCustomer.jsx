@@ -17,7 +17,7 @@ import {
 import NumberFormat from "react-number-format";
 import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@mui/icons-material/Close';
 import { useSelector, useDispatch } from "react-redux";
 import { newCustomerActive } from "../../../../redux/features/sidebarSlice";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
