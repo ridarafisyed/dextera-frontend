@@ -13,7 +13,7 @@ import {
 	REGISTER_FAIL,
 } from "./types";
 import { createMessage, returnErrors } from "./messages";
-import { useSelector } from "react-redux";
+
 import { reset } from "../redux/features/tabSlice";
 import { resetNewTab } from "../redux/features/searchTabSlice";
 
