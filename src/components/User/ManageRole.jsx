@@ -1,8 +1,6 @@
 /** @format */
 
 import React, { Fragment, useState, useEffect } from "react";
-
-
 import axios from "axios";
 import Table from "@mui/material/Table"
 import TableCell from "@mui/material/TableCell"
@@ -23,23 +21,25 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import TextField from "@mui/material/TextField"
 import Paper from "@mui/material/Paper"
-import RoleFunctions from "./RoleFuncions";
+import RoleFunctions from "./RoleFunctions";
 import ClearIcon from "@mui/icons-material/Clear";
 import { ActionAlerts } from "../../utils/ActionAlerts";
 
 import { CONFIG } from "../../api/MatterApi";
 import { useSelector, useDispatch } from "react-redux";
-import {getPermissions} from "../../redux/features/permissionSlice";
+import {getRole} from "../../redux/features/roleSlice";
+import { ListItemText } from "@mui/material";
 
 
 const ManageRole = () => {
+	const role  = useSelector((state)=> state.role.role)
 	const dispatch = useDispatch();
 	const { permissions } = useSelector(
 		(state) => state.permissions,
 	);
 
 	const [roles, setRoles] = useState([]);
-	const [role, setRole] = useState(null);
+
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 	const [status, setStatus] = useState("");
@@ -80,6 +80,7 @@ const ManageRole = () => {
 	};
 	useEffect(() => {
 		FetchData();
+				
 	}, []);
 	const handleDelete = (id) => {
 		axios
@@ -93,11 +94,7 @@ const ManageRole = () => {
 				);
 			});
 	};
-	const selectRole = (id) => {
-		setRole(id);
-		dispatch(getPermissions(id));
-	};
-	
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const body = JSON.stringify({ name });
@@ -169,40 +166,49 @@ const ManageRole = () => {
 								</Button>
 							</DialogActions>
 						</Dialog>
+						<Box >
+									<List>
 						{!loading ? (
 							roles.map((data, index) => (
-								<Box key={index}>
-									<List>
-										<ListItem disablePadding>
-											<span>
-												<Button
-													sx={
-														data.id === role
-															? { backgroundColor: "#796ef0", color: "white" }
-															: null
-													}
-													onClick={() => selectRole(data.id)}>
-													{data.name}
-												</Button>
-												<IconButton
-													variant='contained'
-													value={data.id}
-													size='small'
-													onClick={() => handleDelete(data.id)}
-													sx={{
-														borderRadius: "0.5rem",
-														float: "right",
-													}}>
-													<ClearIcon />
-												</IconButton>
-											</span>
-										</ListItem>
-									</List>
-								</Box>
+								<ListItem disablePadding key={index}
+									secondaryAction={
+									<IconButton
+											edge="end" 
+											variant='contained'
+											value={data.id}
+											size='small'
+											onClick={() => handleDelete(data.id)}
+											sx={{
+												borderRadius: "0.5rem",
+											
+											}}>
+											<ClearIcon />
+										</IconButton>}>
+									<ListItemText>
+										<Button
+											sx={data.id === role.id? { 
+												backgroundColor: "#796ef0", 
+												color: "white", 
+												whiteSpace: "wrap",
+												"&:hover": {
+													color: "#796ef0",
+													backgroundColor: "white",
+												}, }
+										: null}
+											onClick={()=>dispatch(getRole(data.id))}>
+											{data.name}
+										</Button>
+										
+									
+									</ListItemText>
+								</ListItem>
+									
 							))
 						) : (
 							<Typography>Loading ...</Typography>
 						)}
+						</List>
+					</Box>
 					</Box>
 				</Grid>
 				<Grid item lg={10}>
@@ -250,13 +256,8 @@ const ManageRole = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{role !== null && permissions.permissions.length > 0 ? (
-									permissions.permissions.map((permission, index) => (
-										<RoleFunctions key={permission.id} permission={permission}/>
-									))
-								) : (
-									<>please selete a role</>
-								)}
+								{role ? <RoleFunctions id={role.id}/>: 	<>please selete a role</>}
+								
 							</TableBody>
 						</Table>
 					</TableContainer>
