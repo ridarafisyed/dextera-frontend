@@ -7,22 +7,22 @@ import Box from "@mui/material/Box"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemText from "@mui/material/ListItemText"
-
+import Typography from "@mui/material/Typography"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import TextField from "@mui/material/TextField"
-import CircularProgress from '@mui/material/CircularProgress';
 import ClearIcon from "@mui/icons-material/Clear";
-
+import CircularProgress from '@mui/material/CircularProgress';
 import { CONFIG } from "../../api/MatterApi";
 
 const SubCategory = () => {
   const [subCategory, setSubCategory] = useState([]);
 
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState("");
   const [formData, setFormData] = useState({
     name: "",
   });
@@ -48,13 +48,13 @@ const SubCategory = () => {
       .then((res) => {
         console.log(res.data);
         setLoading(false);
-      
+        setStatus(res.statusText);
         setSubCategory(res.data);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
-       
+        setStatus(err.statusText);
       });
   };
   useEffect(() => {

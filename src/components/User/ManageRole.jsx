@@ -261,12 +261,12 @@ const ManageRole = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{
+								{/* {
 									isLoading? role ? <RoleFunctions id={role.id}/>: 	<>please selete a role</>: <Box mt={5} sx={{ display: 'flex' }}>
                           <CircularProgress />
                         </Box>
 								}
-								
+								 */}
 								
 								
 							</TableBody>
