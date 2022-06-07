@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider"
 import FormControlLabel from "@mui/material/FormControlLabel"
+import CircularProgress from '@mui/material/CircularProgress';
 import Stack from "@mui/material/Stack"
 import axios from "axios";
 import NumberFormat from 'react-number-format';
@@ -334,7 +335,9 @@ const handleSubmit = (e) => {
                         </MenuItem>
                       ))
                     ) : (
-                      <span>Loading ...</span>
+                      <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
                     )}
                   </TextField>
                 </Grid>
@@ -378,7 +381,9 @@ const handleSubmit = (e) => {
                         </MenuItem>
                       ))
                     ) : (
-                      <span>Loading ...</span>
+                      <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
                     )}
                   </TextField>
                 </Grid>

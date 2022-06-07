@@ -1,7 +1,7 @@
 /** @format */
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-
+import CircularProgress from '@mui/material/CircularProgress';
 import Button from "@mui/material/Button"
 import Box from "@mui/material/Box"
 import List from "@mui/material/List"
@@ -164,7 +164,9 @@ const Category = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {!loading ? showCategory() : <Typography>Loading ...</Typography>}
+      {!loading ? showCategory() : <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>}
     </Fragment>
   );
 };

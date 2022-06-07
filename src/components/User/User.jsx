@@ -23,6 +23,7 @@ import {
   FormControlLabel,
   Stack,
 } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from "axios";
 
 import { ActionAlerts } from "../../utils/ActionAlerts";
@@ -407,7 +408,9 @@ const User = () => {
                         </MenuItem>
                       ))
                     ) : (
-                      <span>Loading ...</span>
+                      <Box mt={5} sx={{ display: 'flex' }}>
+                        <CircularProgress />
+                      </Box>
                     )}
                   </TextField>
                 </Grid>
@@ -445,7 +448,9 @@ const User = () => {
                         </MenuItem>
                       ))
                     ) : (
-                      <span>Loading ...</span>
+                        <Box mt={5}sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
                     )}
                   </TextField>
                 </Grid>
@@ -706,7 +711,9 @@ const User = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loading ? showUsers() : <Typography>Loading ...</Typography>}
+              {!loading ? showUsers() : <Box mt={5}sx={{ display: 'flex' }}>
+                                            <CircularProgress />
+                                          </Box>}
             </TableBody>
           </Table>
         </TableContainer>

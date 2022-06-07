@@ -13,7 +13,7 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import TextField from "@mui/material/TextField"
-
+import CircularProgress from '@mui/material/CircularProgress';
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { CONFIG } from "../../api/MatterApi";
@@ -157,7 +157,9 @@ const SubCategory = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {!loading ? showSubcategory() : <Typography>Loading ...</Typography>}
+      {!loading ? showSubcategory() : <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>}
     </Fragment>
   );
 };

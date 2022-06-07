@@ -19,6 +19,7 @@ import Stack from "@mui/material/Stack"
 import axios from "axios";
 import { CONFIG } from "../../api/MatterApi";
 import CreateUser from "./CreateUser";
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   Search,
   SearchIconWrapper,
@@ -227,7 +228,9 @@ const User = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loading ? showUsers() : <Typography>Loading ...</Typography>}
+              {!loading ? showUsers() : <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>}
             </TableBody>
           </Table>
         </TableContainer>

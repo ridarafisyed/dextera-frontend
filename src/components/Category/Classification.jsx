@@ -14,7 +14,7 @@ import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import TextField from "@mui/material/TextField"
-
+import CircularProgress from '@mui/material/CircularProgress';
 import ClearIcon from "@mui/icons-material/Clear";
 import { ActionAlerts } from "../../utils/ActionAlerts";
 import { CONFIG } from "../../api/MatterApi";
@@ -162,7 +162,9 @@ const Classification = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {!loading ? showClassification() : <Typography>Loading ...</Typography>}
+      {!loading ? showClassification() : <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>}
     </Fragment>
   );
 };

@@ -1,29 +1,21 @@
 /** @format */
 
-import React, { Fragment,  useEffect, useState } from "react";
+import React, {  useState } from "react";
 import axios from "axios"
 import { CONFIG } from "../../api/MatterApi";
-import Table from "@mui/material/Table"
 import TableCell from "@mui/material/TableCell"
-import TableBody from "@mui/material/TableBody"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import Button from "@mui/material/Button"
-import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import IconButton from "@mui/material/IconButton"
 import RectangleIcon from '@mui/icons-material/Rectangle';
-import { useToggle } from "../../context/useToggle";
 import { useDispatch, useSelector } from "react-redux";
-import RolePermissions from "./RolePermissions";
-import { getPermissions } from "../../redux/features/permissionSlice";
+import CircularProgress from '@mui/material/CircularProgress';
 import { getRole } from "../../redux/features/roleSlice";
-
 
 const RoleFunctions = ({id}) => {
     const role  = useSelector((state)=> state.role.role)
+    const isLoading = useSelector((state)=>state.role.role)
     const [isAll, setIsAll] = useState(null)
     const dispatch = useDispatch()
 
@@ -48,7 +40,9 @@ const RoleFunctions = ({id}) => {
 
   return (
     <>
-      {role.role_functions.map((item)=>(
+ 
+      {isLoading ? 
+        role?.role_functions.map((item)=>(
         <TableRow>
         	<TableCell>
               <Typography >{item.name}</Typography>
@@ -116,7 +110,10 @@ const RoleFunctions = ({id}) => {
                 : null}
           </TableRow>
             
-      ))}
+      )): <Box mt={5} sx={{ display: 'flex' }}>
+            <CircularProgress />
+          </Box>  
+    }
       	
     </>
   )

@@ -14,6 +14,7 @@ import {
 	TextField,
 	Alert,
 } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 import AlertMassage from "../../components/Alerts/Alerts";
 import { useSelector, useDispatch } from "react-redux";
@@ -69,7 +70,9 @@ const Login = () => {
 	};
 
 	if (isLoading) {
-		return "Loading...";
+		return (<Box mt={5}sx={{ display: 'flex'  }}>
+					<CircularProgress />
+				</Box>)
 	}
 	if (isAuthenticated) {
 		return <Redirect to='/' />;

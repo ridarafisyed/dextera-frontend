@@ -26,6 +26,7 @@ import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   LinkButton,
   Search,
@@ -364,7 +365,9 @@ const ManageUserGroup = () => {
                                 </MenuItem>
                               ))
                             ) : (
-                              <span>Loading ...</span>
+                              <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
                             )}
                           </TextField>
                         </Grid>
@@ -389,7 +392,9 @@ const ManageUserGroup = () => {
                                 </MenuItem>
                               ))
                             ) : (
-                              <span>Loading ...</span>
+                              <Box mt={5} sx={{ display: 'flex' }}>
+                                <CircularProgress />
+                              </Box>
                             )}
                           </TextField>
                         </Grid>
@@ -456,7 +461,9 @@ const ManageUserGroup = () => {
               </Button>
             </DialogActions>
           </Dialog>
-          {!loading ? showGroup() : <Typography>Loading ...</Typography>}
+          {!loading ? showGroup() : <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>}
         </Grid>
         <Grid item lg={9}>
           <TableContainer>
@@ -480,7 +487,9 @@ const ManageUserGroup = () => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{!loadingUser ? showUser() : <>Loading.. </>}</TableBody>
+              <TableBody>{!loadingUser ? showUser() : <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>}</TableBody>
             </Table>
           </TableContainer>
         </Grid>

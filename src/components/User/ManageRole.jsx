@@ -23,6 +23,7 @@ import TextField from "@mui/material/TextField"
 import Paper from "@mui/material/Paper"
 import RoleFunctions from "./RoleFunctions";
 import ClearIcon from "@mui/icons-material/Clear";
+import CircularProgress from '@mui/material/CircularProgress';
 import { ActionAlerts } from "../../utils/ActionAlerts";
 
 import { CONFIG } from "../../api/MatterApi";
@@ -33,6 +34,8 @@ import { ListItemText } from "@mui/material";
 
 const ManageRole = () => {
 	const role  = useSelector((state)=> state.role.role)
+	const isLoading  = useSelector((state)=> state.role.role)
+	const isSuccess = useSelector((state)=> state.role.role)
 	const dispatch = useDispatch();
 	const { permissions } = useSelector(
 		(state) => state.permissions,
@@ -168,8 +171,8 @@ const ManageRole = () => {
 						</Dialog>
 						<Box >
 									<List>
-						{!loading ? (
-							roles.map((data, index) => (
+						{isLoading ? (
+							roles?.map((data, index) => (
 								<ListItem disablePadding key={index}
 									secondaryAction={
 									<IconButton
@@ -205,7 +208,9 @@ const ManageRole = () => {
 									
 							))
 						) : (
-							<Typography>Loading ...</Typography>
+						<Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
 						)}
 						</List>
 					</Box>
@@ -256,7 +261,13 @@ const ManageRole = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{role ? <RoleFunctions id={role.id}/>: 	<>please selete a role</>}
+								{
+									isLoading? role ? <RoleFunctions id={role.id}/>: 	<>please selete a role</>: <Box mt={5} sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
+								}
+								
+								
 								
 							</TableBody>
 						</Table>
