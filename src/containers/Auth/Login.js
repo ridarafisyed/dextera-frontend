@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { signIn, reset } from "../../redux/features/authSlice";
+import { signIn, reset, resetError } from "../../redux/features/authSlice";
 
 import {
 	Avatar,
@@ -47,6 +47,9 @@ const Login = () => {
 		if (isAuthenticated) {
 			return <Redirect to='/' />;
 		
+		}
+		if (isError) {
+			setTimeout( function() { dispatch(resetError()); }, 3000);
 		}
 	}, [user, isError, isSuccess, message, dispatch]);
 

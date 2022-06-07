@@ -199,7 +199,7 @@ const ManageUserGroup = () => {
         <Box mt={1}>
           <List>
             <ListItem disablePadding>
-              <ListItemText color="primary"sx={{textTransform:"uppercase"}}>{data.name}</ListItemText>
+              <ListItemText color="primary" size="small" sx={{textTransform:"uppercase", color: "#796ef0"}}>{data.name}</ListItemText>
               <Button
                 variant="contained"
                 size="small"

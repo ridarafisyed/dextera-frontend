@@ -621,10 +621,7 @@ const handleSubmit = (e) => {
                   </Button>
                   
                   <Button variant="contained" color="warning"sx={{color:"#fff"}}>
-                    Deactivate
-                  </Button>
-                  <Button variant="contained" color="error" sx={{color:"#fff"}}>
-                    Delete
+                    Activate
                   </Button>
                 </Box>
               </Grid>
