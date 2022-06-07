@@ -1,7 +1,7 @@
 import React from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
+// import CloseIcon from "@material-ui/core/Close";
 
 export default function AlertMassage({ status, message }) {
   const [open, setOpen] = React.useState(true);
@@ -29,7 +29,7 @@ export default function AlertMassage({ status, message }) {
         message={message}
         action={[
           <IconButton key="close" onClick={handleClose}>
-            <CloseIcon />
+            {/* <CloseIcon /> */}
           </IconButton>
         ]}
       />
