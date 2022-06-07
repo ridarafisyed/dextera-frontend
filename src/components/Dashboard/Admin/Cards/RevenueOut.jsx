@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import NumberFormat from "react-number-format";
 import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector, useDispatch } from "react-redux";
 import { revenueOutActive } from "../../../../redux/features/sidebarSlice";
