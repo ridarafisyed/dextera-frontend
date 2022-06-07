@@ -1,16 +1,12 @@
 /** @format */
 
-import React, { Fragment } from "react";
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  IconButton,
-  Avatar,
-  ListItemText,
-  ListItemAvatar,
-} from "@mui/material";
+import React from "react";
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import IconButton from "@mui/material/IconButton"
+import Avatar from "@mui/material/Avatar"
+import ListItemText from "@mui/material/ListItemText"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
 import CloseIcon from '@mui/icons-material/Close';
 import StarIcon from "@mui/icons-material/Star";
 import { useDispatch, useSelector } from "react-redux";
