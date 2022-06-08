@@ -79,10 +79,11 @@ const ManageRole = () => {
 				setLoading(false);
 				setError(err.message);
 			});
-			dispatch(getRole(1))
+			
 	};
 	useEffect(() => {
 		FetchData();
+		dispatch(getRole(1))
 				
 	}, []);
 	const handleDelete = (id) => {

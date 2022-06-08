@@ -63,7 +63,7 @@ const RoleFunctions = ({id}) => {
 
   return (
     <>
-      {role?.role_functions.map((item)=>(
+      {role.role_functions?.map((item)=>(
         <TableRow>
         	<TableCell sx={{ color:'#796ef0', textTransform:'uppercase'}}>
               {item.name}
