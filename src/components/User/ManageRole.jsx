@@ -65,6 +65,7 @@ const ManageRole = () => {
 	};
 
 	const FetchData = () => {
+		
 		axios
 			.get(`${process.env.REACT_APP_API_URL}/user/auth/roles/`, CONFIG)
 			.then((res) => {
@@ -78,6 +79,7 @@ const ManageRole = () => {
 				setLoading(false);
 				setError(err.message);
 			});
+			dispatch(getRole(1))
 	};
 	useEffect(() => {
 		FetchData();
