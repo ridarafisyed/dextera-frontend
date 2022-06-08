@@ -37,9 +37,7 @@ const ManageRole = () => {
 	const isLoading  = useSelector((state)=> state.role.role)
 	const isSuccess = useSelector((state)=> state.role.role)
 	const dispatch = useDispatch();
-	const { permissions } = useSelector(
-		(state) => state.permissions,
-	);
+	
 
 	const [roles, setRoles] = useState([]);
 
@@ -255,20 +253,22 @@ const ManageRole = () => {
 									<TableCell>
 										<Typography color='white'>Region</Typography>
 									</TableCell>
-									<TableCell>
-										<Typography color='white'>All</Typography>
-									</TableCell>
+								
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{/* {
-									isLoading? role ? <RoleFunctions id={role.id}/>: 	<>please selete a role</>: <Box mt={5} sx={{ display: 'flex' }}>
-                          <CircularProgress />
-                        </Box>
+								{isLoading? (
+									isSuccess? (
+										role ? (<RoleFunctions id={role.id}/>)
+												:(<>please selete a role</>)
+											): (<Box mt={5} sx={{ display: 'flex' }}>
+										<CircularProgress />
+									</Box>))
+								:(<Box mt={5} sx={{ display: 'flex' }}>
+										<CircularProgress />
+									</Box>)
 								}
-								 */}
-								
-								
+
 							</TableBody>
 						</Table>
 					</TableContainer>

@@ -1,7 +1,10 @@
+
 /** @format */
 
 import React, {  useState } from "react";
 import axios from "axios"
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import { CONFIG } from "../../api/MatterApi";
 import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
@@ -13,10 +16,30 @@ import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
 import { getRole } from "../../redux/features/roleSlice";
 
+import MuiToggleButton from "@mui/material/ToggleButton";
+import { styled } from "@mui/material/styles";
+import "./style.css"
+
+const ToggleButton = styled(MuiToggleButton)({
+  color:"#D3D3D3",
+  backgroundColor: "#D3D3D3", 
+  "&:hover":{
+    color:"#D3D3D3",
+    backgroundColor: "#D3D3D3", 
+  },
+  "&.Mui-selected": {
+    color: "#4BB543",
+    backgroundColor: '#4BB543'
+  }, "&.Mui-selected:hover": {
+    color: "#4BB543",
+    backgroundColor: '#4BB543'
+  }
+});
+
 const RoleFunctions = ({id}) => {
     const role  = useSelector((state)=> state.role.role)
-    const isLoading = useSelector((state)=>state.role.role)
-    const [isAll, setIsAll] = useState(null)
+    // const isLoading = useSelector((state)=>state.role.role)
+    const [isAll, setIsAll] = useState(false)
     const dispatch = useDispatch()
 
     const updateFunction=(data)=>{
@@ -40,81 +63,51 @@ const RoleFunctions = ({id}) => {
 
   return (
     <>
- 
-      {isLoading ? 
-        role?.role_functions.map((item)=>(
+      {role?.role_functions.map((item)=>(
         <TableRow>
-        	<TableCell>
-              <Typography >{item.name}</Typography>
+        	<TableCell sx={{ color:'#796ef0', textTransform:'uppercase'}}>
+              {item.name}
             </TableCell>
             {item.function_permission.map((permission)=>(
               <>
-              { permission.name === "Contact" ? setIsAll(isAll + permission.is_set): null}
               <TableCell>
-                <Button
-                  onClick={()=>updateFunction(permission)}
-                  sx={
-                    permission.is_set
-                      ? {
-                          "color": "#4BB543",
-                          "backgroundColor": "#4BB543",
-                          "&:hover": {
-                            backgroundColor: "#4BB545",
-                            color: "#4BB545",
-                          },
-                        }
-                      : {
-                          "color": "#D3D3D3",
-                          "backgroundColor": "#D3D3D3",
-                          "&:hover": {
-                            backgroundColor: "#D3D3D3",
-                            color: "#D3D3D3",
-                          },
-                        }
-                  }
+                <ToggleButton
+                  value={permission.is_set}
+                  selected={permission.is_set}
+                  onChange={() => {
+                    updateFunction(permission);
+                  }}
+                >
+                  {permission.is_set ? <RectangleIcon className="activeButton" />: <RectangleIcon className="disableButton"/> }
                   
-                  size='large'
-                  aria-label='toggle'>
-                  <RectangleIcon />
-                </Button>
+                </ToggleButton>
               </TableCell>
-              </>
-            ))}
-            {item.name === "Contact" ?
+              {item.name === "contact" ? (
               <TableCell>
-                <Button
-                    sx={
-                      isAll ? {
-                            "color": "#4BB543",
-                            "backgroundColor": "#4BB543",
-                            "&:hover": {
-                              backgroundColor: "#4BB545",
-                              color: "#4BB545",
-                            },
-                          }
-                        : {
-                            "color": "#D3D3D3",
-                            "backgroundColor": "#D3D3D3",
-                            "&:hover": {
-                              backgroundColor: "#D3D3D3",
-                              color: "#D3D3D3",
-                            },
-                          }
-                    }
-                    // onClick={()=>settingAll()}
-                    size='large'
-                    aria-label='toggle'>
-                    <RectangleIcon />
-                  </Button>
+                <ToggleButton
+                    value={permission.is_set}
+                    selected={permission.is_set}
+                    onChange={() => {
+                      updateFunction(permission);
+                    }}
+                    className="toggleButton"
+                  >
+                    {permission.is_set ? <RectangleIcon className="activeButton"/>: <RectangleIcon className="disableButton"/> }
+                    
+                  </ToggleButton>
                 </TableCell>
-                : null}
+                
+                ):null}
+              </>
+              
+            ))}
+           {item.name ==="contact"? null: <TableCell colSpan={4}/>}
+            
           </TableRow>
             
-      )): <Box mt={5} sx={{ display: 'flex' }}>
-            <CircularProgress />
-          </Box>  
+      ))
     }
-      	
+      	 
     </>
   )
 }
